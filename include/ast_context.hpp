@@ -21,7 +21,7 @@ private:
         1, 1,                           // function arguments and return values a0-1
         1, 1, 1, 1, 1, 1,               // function arguments a2-7
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   // saved register s2-11
-        0, 0, 0, 1                      // saved registers t3-6
+        0, 0, 0, 0                      // saved registers t3-6
     };
 
 public:
