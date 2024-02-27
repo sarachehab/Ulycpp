@@ -139,6 +139,9 @@ cast_expression
 
 multiplicative_expression
 	: cast_expression
+	| multiplicative_expression '*' cast_expression { $$ = new Multiplication($1, $3); }
+	| multiplicative_expression '/' cast_expression { $$ = new Division($1, $3); }
+	| multiplicative_expression '%' cast_expression { $$ = new Modulus($1, $3); }
 	;
 
 additive_expression
@@ -149,6 +152,8 @@ additive_expression
 
 shift_expression
 	: additive_expression
+	| shift_expression LEFT_OP additive_expression	{ $$ = new LeftShift($1, $3); }
+	| shift_expression RIGHT_OP additive_expression	{ $$ = new RightShift($1, $3); }
 	;
 
 relational_expression
@@ -166,11 +171,12 @@ and_expression
 
 exclusive_or_expression
 	: and_expression
+	| exclusive_or_expression '^' and_expression { $$ = new ExclusiveOr($1, $3); }
 	;
 
 inclusive_or_expression
 	: exclusive_or_expression
-	| inclusive_or_expression '|' exclusive_or_expression { $$ = new Or($1, $3); }
+	| inclusive_or_expression '|' exclusive_or_expression { $$ = new InclusiveOr($1, $3); }
 	;
 
 logical_and_expression

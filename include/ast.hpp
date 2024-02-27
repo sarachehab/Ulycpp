@@ -13,10 +13,9 @@
 #include "ast_type_specifier.hpp"
 #include "ast_constant.hpp"
 #include "ast_context.hpp"
-#include "ast_addition.hpp"
-#include "ast_substraction.hpp"
-#include "ast_and.hpp"
-#include "ast_or.hpp"
+
+#include "ast_binary_operation.hpp"
+#include "ast_arithmetic_operation.hpp"
 
 extern Node *ParseAST(std::string file_name);
 
