@@ -143,6 +143,8 @@ multiplicative_expression
 
 additive_expression
 	: multiplicative_expression
+	| additive_expression '+' multiplicative_expression { $$ = new Addition($1, $3); }
+	| additive_expression '-' multiplicative_expression { $$ = new Substraction($1, $3); }
 	;
 
 shift_expression
@@ -159,6 +161,7 @@ equality_expression
 
 and_expression
 	: equality_expression
+	| and_expression '&' equality_expression { $$ = new And($1, $3); }
 	;
 
 exclusive_or_expression
@@ -167,6 +170,7 @@ exclusive_or_expression
 
 inclusive_or_expression
 	: exclusive_or_expression
+	| inclusive_or_expression '|' exclusive_or_expression { $$ = new Or($1, $3); }
 	;
 
 logical_and_expression

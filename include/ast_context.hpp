@@ -10,8 +10,7 @@
 // compiled (e.g. function scope and variable names).
 
 struct Variable;
-class Context
-{
+class Context{
 
 private:
 
