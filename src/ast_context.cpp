@@ -20,7 +20,20 @@ int Context::allocateRegister(){
         }
     }
 
-    // TODO solution if all temporary registers are used
+    // if all registers are used up, free up a register and use it
+    for (auto it = variable_bindings.begin(); it != variable_bindings.end(); it++){
+        int reg = it->second.reg;
+        if (reg != -1){
+            freeUpRegister(reg);
+            it->second.reg; // variable spilled into memory, no longer in register file
+            return reg;
+        }
+    }
+
     throw std::runtime_error("All temporary registers used up! Check ast_context.cpp");
 
+}
+
+std::string Context::getRegisterName(int i){
+    return registers_name[i];
 }
