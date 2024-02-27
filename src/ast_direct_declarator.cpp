@@ -1,8 +1,8 @@
 #include "ast_direct_declarator.hpp"
 
-void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
+void DirectDeclarator::EmitRISC(std::ostream &stream, int destReg, Context &context) const
 {
-    identifier_->EmitRISC(stream, context);
+    identifier_->EmitRISC(stream, destReg, context);
     stream << ":" << std::endl;
 }
 

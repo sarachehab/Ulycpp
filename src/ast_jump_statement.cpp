@@ -1,10 +1,13 @@
 #include "ast_jump_statement.hpp"
 
-void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
+void ReturnStatement::EmitRISC(std::ostream &stream, int destReg, Context &context) const
 {
     if (expression_ != nullptr)
     {
-        expression_->EmitRISC(stream, context);
+        // TODO: if return statement
+        // TODO: if function call inside of function call + val saved: int x = getNum(y);
+        int regA0 = 10; // TODO: hard coded into a0
+        expression_->EmitRISC(stream, regA0, context);
     }
     stream << "ret" << std::endl;
 }
