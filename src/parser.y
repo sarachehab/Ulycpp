@@ -166,6 +166,10 @@ shift_expression
 
 relational_expression
 	: shift_expression
+	| relational_expression '<' shift_expression { $$ = new LessThan($1, $3); }
+	| relational_expression '>' shift_expression { $$ = new GreaterThan($1, $3); }
+	| relational_expression LE_OP shift_expression { $$ = new LessThanEqual($1, $3); }
+	| relational_expression GE_OP shift_expression { $$ = new GreaterThanEqual($1, $3); }
 	;
 
 equality_expression

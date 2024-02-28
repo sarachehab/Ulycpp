@@ -97,4 +97,32 @@ public:
     std::string getInstruction() const override;
 };
 
+class LessThan : public BinaryOperation {
+public:
+    using BinaryOperation::BinaryOperation;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
+class LessThanEqual : public BinaryOperation {
+public:
+    using BinaryOperation::BinaryOperation;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
+class GreaterThan : public BinaryOperation {
+public:
+    using BinaryOperation::BinaryOperation;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
+class GreaterThanEqual : public BinaryOperation {
+public:
+    using BinaryOperation::BinaryOperation;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
 #endif

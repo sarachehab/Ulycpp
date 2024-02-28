@@ -105,3 +105,39 @@ std::string Negate::getInstruction() const {
 std::string Negate::getOperation() const {
     return " - ";
 }
+
+
+std::string LessThan::getInstruction() const {
+    return "slt ";
+}
+
+std::string LessThan::getOperation() const {
+    return " < ";
+}
+
+
+std::string LessThanEqual::getInstruction() const {
+    return "sle "; //need to change
+}
+
+std::string LessThanEqual::getOperation() const {
+    return " <= ";
+}
+
+
+std::string GreaterThan::getInstruction() const {
+    return "sgt ";
+}
+
+std::string GreaterThan::getOperation() const {
+    return " > ";
+}
+
+
+std::string GreaterThanEqual::getInstruction() const {
+    return "sge "; //need to change
+}
+
+std::string GreaterThanEqual::getOperation() const {
+    return " >= ";
+}
