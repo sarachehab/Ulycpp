@@ -37,7 +37,7 @@ std::string LeftShift::getOperation() const {
 
 
 std::string RightShift::getInstruction() const {
-    return "srl ";
+    return "sra ";
 }
 
 std::string RightShift::getOperation() const {
@@ -86,4 +86,22 @@ std::string Modulus::getInstruction() const {
 
 std::string Modulus::getOperation() const {
     return " % ";
+}
+
+
+std::string OneComplement::getInstruction() const {
+    return "not ";
+}
+
+std::string OneComplement::getOperation() const {
+    return " ~ ";
+}
+
+
+std::string Negate::getInstruction() const {
+    return "neg ";
+}
+
+std::string Negate::getOperation() const {
+    return " - ";
 }

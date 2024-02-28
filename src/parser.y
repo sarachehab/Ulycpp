@@ -95,15 +95,21 @@ direct_declarator
 
 statement
 	: jump_statement { $$ = $1; }
+	| expression_statement { $$ = $1; }
 	;
 
 compound_statement
-	: '{' statement_list '}' { $$ = $2; }
+	: '{' statement_list '}' 					{ $$ = $2; }
 	;
 
 statement_list
 	: statement { $$ = new NodeList($1); }
 	| statement_list statement { $1->PushBack($2); $$=$1; }
+	;
+
+expression_statement
+	: ';'
+	| expression ';' { $$ = $1; }
 	;
 
 jump_statement
@@ -116,9 +122,8 @@ jump_statement
 	;
 
 primary_expression
-	: INT_CONSTANT {
-		$$ = new IntConstant($1);
-	}
+	: INT_CONSTANT 	{ $$ = new IntConstant($1); }
+	| '(' expression ')'	{ $$ = $2; }
 	;
 
 postfix_expression
@@ -131,6 +136,9 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression
+	| '+' cast_expression 	{ $$ = $2; }
+	| '-' cast_expression	{ $$ = new Negate($2); }
+	| '~' cast_expression	{ $$ = new OneComplement($2); }
 	;
 
 cast_expression

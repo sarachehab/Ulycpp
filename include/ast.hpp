@@ -15,6 +15,7 @@
 #include "ast_context.hpp"
 
 #include "ast_binary_operation.hpp"
+#include "ast_unary_operation.hpp"
 #include "ast_arithmetic_operation.hpp"
 
 extern Node *ParseAST(std::string file_name);
