@@ -4,12 +4,14 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
 // compiled (e.g. function scope and variable names).
 
 struct Variable;
+enum class Specifier;
 class Context{
 
 private:
@@ -45,16 +47,26 @@ private:
     };
 
     std::map<std::string, Variable> variable_bindings;
+    int current_stack_size;
 
 public:
 
     ~ Context(){}
-    Context(){}
+    Context() : current_stack_size(16) {}
 
     void useRegister(int i);
     void freeUpRegister(int i);
     int allocateRegister();
     std::string getRegisterName(int i);
+
+    // function to add to bindings
+    void addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, int reg);
+
+    // function to get variable from memory/register
+    int fetchVariable(std::string variable_name);
+
+    // modifiy stack size when allocating memory
+    int increaseCurrentStackSize(int memory_cells_allocated);
 
 };
 
@@ -62,14 +74,24 @@ enum class Specifier {
     _int,
 };
 
+
+inline std::unordered_map <Specifier, int> SpecifierSize {
+    {Specifier::_int, 4}
+};
+
 struct Variable {
     Specifier type;
+    int memory_cells_allocated;
     int sp_offset;
     int reg;
 
-    Variable(Specifier _type, int _sp_offset)
+    Variable() = default; // Default constructor
+
+    Variable(Specifier _type, int _memory_cells_allocated, int _sp_offset, int _reg)
     : type(_type)
+    , memory_cells_allocated(_memory_cells_allocated)
     , sp_offset(_sp_offset)
+    , reg(_reg)
     {}
 };
 

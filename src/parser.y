@@ -64,9 +64,7 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator compound_statement {
-		$$ = new FunctionDefinition($1, $2, $3);
-	}
+	: declaration_specifiers declarator compound_statement { $$ = new FunctionDefinition($1, $2, $3); }
 	;
 
 declaration_specifiers
@@ -74,9 +72,17 @@ declaration_specifiers
 	;
 
 type_specifier
-	: INT {
-		$$ = new TypeSpecifier("int");
-	}
+	: INT { $$ = new TypeSpecifier("int"); }
+	;
+
+init_declarator_list
+	: init_declarator { $$ = new NodeList($1); }
+	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$ = $1; }
+	;
+
+init_declarator
+	: declarator { $$ = $1; }
+	| declarator '=' initializer { /*todo: assignement*/ }
 	;
 
 declarator
@@ -84,13 +90,12 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER {
-		$$ = new Identifier(*$1);
-		delete $1;
-	}
-	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);
-	}
+	: IDENTIFIER { $$ = new Identifier($1); }
+	| direct_declarator '(' ')' { $$ = new DirectDeclarator($1); }
+	;
+
+initializer
+	: assignment_expression { $$ = $1; }
 	;
 
 statement
@@ -98,13 +103,25 @@ statement
 	| expression_statement { $$ = $1; }
 	;
 
+declaration
+	: declaration_specifiers init_declarator_list ';' { $$ = new Declaration($1, $2); }
+	;
+
+declaration_list
+	: declaration	{ $$ = new NodeList($1); }
+	| declaration_list declaration { $1->PushBack($2); $$ = $1; }
+	;
+
 compound_statement
 	: '{' statement_list '}' 					{ $$ = $2; }
+	| '{' declaration_list statement_list '}'	{ $$ = new NodeList($2); $$->PushBack($3); }
+	| '{' declaration_list '}'					{ $$ = $2; }
+	| '{' '}'									{ $$ = nullptr; /*todo: review*/ }
 	;
 
 statement_list
 	: statement { $$ = new NodeList($1); }
-	| statement_list statement { $1->PushBack($2); $$=$1; }
+	| statement_list statement { $1->PushBack($2); $$ = $1; }
 	;
 
 expression_statement
@@ -113,12 +130,8 @@ expression_statement
 	;
 
 jump_statement
-	: RETURN ';' {
-		$$ = new ReturnStatement(nullptr);
-	}
-	| RETURN expression ';' {
-		$$ = new ReturnStatement($2);
-	}
+	: RETURN ';' { $$ = new ReturnStatement(nullptr); }
+	| RETURN expression ';' { $$ = new ReturnStatement($2); }
 	;
 
 primary_expression
@@ -210,6 +223,7 @@ assignment_expression
 expression
 	: assignment_expression
 	;
+
 
 %%
 

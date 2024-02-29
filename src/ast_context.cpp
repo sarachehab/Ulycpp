@@ -22,10 +22,12 @@ int Context::allocateRegister(){
 
     // if all registers are used up, free up a register and use it
     for (auto it = variable_bindings.begin(); it != variable_bindings.end(); it++){
-        int reg = it->second.reg;
+        Variable variable_specs = it->second;
+        int reg = variable_specs.reg;
         if (reg != -1){
-            freeUpRegister(reg);
-            it->second.reg; // variable spilled into memory, no longer in register file
+            freeUpRegister(reg); // todo: size of store instructions depends on type
+            std::cout << "sw " << reg << " " << variable_specs.sp_offset << "(" << current_stack_size << ")" << std::endl;
+            variable_specs.reg = -1; // variable spilled into memory, no longer in register file
             return reg;
         }
     }
@@ -36,4 +38,29 @@ int Context::allocateRegister(){
 
 std::string Context::getRegisterName(int i){
     return registers_name[i];
+}
+
+
+void Context::addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, int reg){
+    variable_bindings[name] = Variable(type, memory_cells_allocated, sp_offset, reg);
+}
+
+
+int Context::fetchVariable(std::string variable_name){
+    Variable variable_specs = variable_bindings[variable_name];
+
+    if (variable_specs.reg == -1) {
+        int new_reg = allocateRegister();
+        useRegister(new_reg);
+        variable_specs.reg = new_reg; // todo: size dependant on type, change load accordingly
+        std::cout << "lw " << new_reg << " " << variable_specs.sp_offset << "(" << current_stack_size << ")" << std::endl;
+    }
+
+    return variable_specs.reg;
+}
+
+
+int Context::increaseCurrentStackSize(int memory_cells_allocated) {
+    current_stack_size += memory_cells_allocated;
+    return current_stack_size;
 }

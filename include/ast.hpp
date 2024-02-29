@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include <unordered_map>
 
 #include "ast_direct_declarator.hpp"
 #include "ast_function_definition.hpp"
@@ -17,6 +19,8 @@
 #include "ast_binary_operation.hpp"
 #include "ast_unary_operation.hpp"
 #include "ast_arithmetic_operation.hpp"
+
+#include "ast_declaration.hpp"
 
 extern Node *ParseAST(std::string file_name);
 
