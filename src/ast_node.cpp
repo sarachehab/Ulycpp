@@ -18,6 +18,10 @@ void Node::PushBack(Node* item) {
     throw std::runtime_error("PushBack should not have been called (ast_node)");
 }
 
+int Node::fetchVariable(Context& context) const {
+    throw std::runtime_error("fetchVariable should not have been called (ast_node)");
+}
+
 
 void NodeList::PushBack(Node *item){
     nodes_.push_back(item);

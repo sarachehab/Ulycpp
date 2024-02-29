@@ -21,6 +21,7 @@
 #include "ast_arithmetic_operation.hpp"
 
 #include "ast_declaration.hpp"
+#include "ast_assignement.hpp"
 
 extern Node *ParseAST(std::string file_name);
 

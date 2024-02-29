@@ -45,19 +45,14 @@ void Context::addVariable(std::string name, int memory_cells_allocated, int sp_o
     variable_bindings[name] = Variable(type, memory_cells_allocated, sp_offset, reg);
 }
 
-
-int Context::fetchVariable(std::string variable_name){
-    Variable variable_specs = variable_bindings[variable_name];
-
-    if (variable_specs.reg == -1) {
-        int new_reg = allocateRegister();
-        useRegister(new_reg);
-        variable_specs.reg = new_reg; // todo: size dependant on type, change load accordingly
-        std::cout << "lw " << new_reg << " " << variable_specs.sp_offset << "(" << current_stack_size << ")" << std::endl;
-    }
-
-    return variable_specs.reg;
+Variable Context::getVariableSpecs(std::string name) {
+    return variable_bindings[name];
 }
+
+void Context::updateVariableSpecs(std::string name, Variable variable_specs){
+    variable_bindings[name] = variable_specs;
+}
+
 
 
 int Context::increaseCurrentStackSize(int memory_cells_allocated) {

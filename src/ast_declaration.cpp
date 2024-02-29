@@ -17,7 +17,7 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
 
 void Declaration::Print(std::ostream &stream) const {
     declaration_specifier_->Print(stream);
-    std::cout << " ";
+    stream << " ";
     init_declarator_->Print(stream);
-    std::cout << ";";
+    stream << ";" << std::endl;
 }

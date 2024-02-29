@@ -90,7 +90,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER { $$ = new Identifier($1); }
+	: IDENTIFIER { $$ = new Identifier($1, false); }
 	| direct_declarator '(' ')' { $$ = new DirectDeclarator($1); }
 	;
 
@@ -136,6 +136,7 @@ jump_statement
 
 primary_expression
 	: INT_CONSTANT 	{ $$ = new IntConstant($1); }
+	| IDENTIFIER	{ $$ = new Identifier($1, true); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 
@@ -218,6 +219,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression
+	| unary_expression '=' assignment_expression { $$ = new Assignement($1, $3, false); }
 	;
 
 expression

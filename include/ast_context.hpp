@@ -62,8 +62,11 @@ public:
     // function to add to bindings
     void addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, int reg);
 
-    // function to get variable from memory/register
-    int fetchVariable(std::string variable_name);
+    // get variable specs
+    Variable getVariableSpecs(std::string name);
+
+    // modify variable specs
+    void updateVariableSpecs(std::string name, Variable variable_specs);
 
     // modifiy stack size when allocating memory
     int increaseCurrentStackSize(int memory_cells_allocated);
