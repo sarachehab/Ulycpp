@@ -1,5 +1,9 @@
 #include "ast_direct_declarator.hpp"
 
+std::string DirectDeclarator::getIdentifier() const {
+    return identifier_->getIdentifier();
+}
+
 void DirectDeclarator::EmitRISC(std::ostream &stream, int destReg, Context &context) const
 {
     identifier_->EmitRISC(stream, destReg, context);

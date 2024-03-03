@@ -1,7 +1,7 @@
 #include "ast_unary_operation.hpp"
 
 void UnaryOperation::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int srcReg = context.allocateRegister();
+    int srcReg = context.allocateRegister(stream);
     value_->EmitRISC(stream, srcReg, context);
     stream << getInstruction() << context.getRegisterName(destReg) << ", "
         << context.getRegisterName(srcReg) << std::endl;

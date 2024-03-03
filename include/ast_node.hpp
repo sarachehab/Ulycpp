@@ -17,7 +17,9 @@ public:
     virtual Specifier getType() const;
     virtual std::string getIdentifier() const;
     virtual void PushBack(Node* item);
-    virtual int fetchVariable(Context& context) const;
+    virtual int fetchVariable(std::ostream &stream, Context &context) const;
+
+    virtual std::string getNodeType() const;
 
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
@@ -36,6 +38,8 @@ public:
             delete node;
         }
     }
+
+    std::string getNodeType() const override;
 
     void PushBack(Node *item) override;
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;

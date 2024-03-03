@@ -4,11 +4,14 @@ void Assignement::EmitRISC(std::ostream &stream, int destReg, Context &context) 
     if (declaration_){
         throw std::runtime_error("Have not implemented declarations with assignements yet (ast_assignement)");
     } else {
-        int srcReg = assigned_variable_->fetchVariable(context);
+        int srcReg = target_variable_->fetchVariable(stream, context);
         value_to_assign_->EmitRISC(stream, srcReg, context);
+        stream << "sw " << context.getRegisterName(srcReg) << ", " << context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(sp)" << std::endl;
     }
 }
 
 void Assignement::Print(std::ostream &stream) const {
-    std::cout << "implement this" << std::endl;
+    stream << target_variable_->getIdentifier() << " = ";
+    value_to_assign_->Print(stream);
+    stream << ";" << std::endl;
 }

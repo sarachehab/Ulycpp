@@ -56,7 +56,7 @@ public:
 
     void useRegister(int i);
     void freeUpRegister(int i);
-    int allocateRegister();
+    int allocateRegister(std::ostream &stream);
     std::string getRegisterName(int i);
 
     // function to add to bindings

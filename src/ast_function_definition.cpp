@@ -6,12 +6,12 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     // TODO: these are just examples ones, make sure you understand
     // the concept of directives and correct them.
     stream << ".text" << std::endl;
-    stream << ".globl f" << std::endl;
+    stream << ".globl " << declarator_->getIdentifier() << std::endl;
 
     declarator_->EmitRISC(stream, destReg, context);
 
-    if (compound_statement_ != nullptr)
-    {
+    if (compound_statement_ != nullptr){
+        // todo: fix this, saving automatically into register r0
         compound_statement_->EmitRISC(stream, destReg, context);
     }
 }

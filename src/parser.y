@@ -76,7 +76,7 @@ type_specifier
 	;
 
 init_declarator_list
-	: init_declarator { $$ = new NodeList($1); }
+	: init_declarator { $$ = $1; }
 	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$ = $1; }
 	;
 
@@ -90,7 +90,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER { $$ = new Identifier($1, false); }
+	: IDENTIFIER { $$ = new FunctionIdentifier($1); }
 	| direct_declarator '(' ')' { $$ = new DirectDeclarator($1); }
 	;
 
@@ -136,7 +136,7 @@ jump_statement
 
 primary_expression
 	: INT_CONSTANT 	{ $$ = new IntConstant($1); }
-	| IDENTIFIER	{ $$ = new Identifier($1, true); }
+	| IDENTIFIER	{ $$ = new VariableIdentifier($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 

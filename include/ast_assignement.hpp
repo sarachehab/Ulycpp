@@ -5,18 +5,18 @@
 
 class Assignement : public Node {
 private:
-    Node* assigned_variable_;
+    Node* target_variable_;
     Node* value_to_assign_;
     bool declaration_;
 
 public:
-    Assignement(Node* assigned_variable, Node* value_to_assign, bool declaration)
-        : assigned_variable_(assigned_variable)
+    Assignement(Node* target_variable, Node* value_to_assign, bool declaration)
+        : target_variable_(target_variable)
         , value_to_assign_(value_to_assign)
         , declaration_(declaration)
     {}
     ~ Assignement () {
-        delete assigned_variable_;
+        delete target_variable_;
         delete value_to_assign_;
     }
 

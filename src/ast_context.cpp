@@ -10,7 +10,7 @@ void Context::freeUpRegister(int i){
     used_registers[i] = 0;
 }
 
-int Context::allocateRegister(){
+int Context::allocateRegister(std::ostream &stream){
 
     // find unused temporary register
     for (int i = 5; i < 32; i++){
@@ -25,8 +25,10 @@ int Context::allocateRegister(){
         Variable variable_specs = it->second;
         int reg = variable_specs.reg;
         if (reg != -1){
-            freeUpRegister(reg); // todo: size of store instructions depends on type
-            std::cout << "sw " << reg << " " << variable_specs.sp_offset << "(" << current_stack_size << ")" << std::endl;
+            freeUpRegister(reg);
+            // todo: size of store instructions depends on type
+            // todo: print to stream instead of std::cout fix???????
+            stream << "Missing code in allocateRegister, check ast_context" << std::endl;
             variable_specs.reg = -1; // variable spilled into memory, no longer in register file
             return reg;
         }

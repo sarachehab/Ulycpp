@@ -2,26 +2,38 @@
 #define AST_IDENTIFIER_HPP
 
 #include "ast_node.hpp"
-
-class Identifier : public Node
-{
-private:
+class Identifier : public Node {
+protected:
     std::string identifier_;
-    bool fetch_;
 
 public:
-    Identifier(const std::string* identifier, bool fetch)
+    Identifier(const std::string* identifier)
     : identifier_(*identifier)
-    , fetch_(fetch)
     { delete identifier; };
 
     ~Identifier(){};
 
     std::string getIdentifier() const override;
-    int fetchVariable(Context &context) const override;
+    virtual int fetchVariable(std::ostream &stream, Context &context) const override;
 
-    void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override = 0;
     void Print(std::ostream &stream) const override;
+};
+
+
+class FunctionIdentifier : public Identifier {
+public:
+    using Identifier::Identifier;
+    void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
+};
+
+
+class VariableIdentifier : public Identifier {
+public:
+    using Identifier::Identifier;
+
+    int fetchVariable(std::ostream &stream, Context &context) const override;
+    void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
 };
 
 #endif

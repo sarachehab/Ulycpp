@@ -6,8 +6,8 @@ void ReturnStatement::EmitRISC(std::ostream &stream, int destReg, Context &conte
     {
         // TODO: if return statement
         // TODO: if function call inside of function call + val saved: int x = getNum(y);
-        int regA0 = 10; // TODO: hard coded into a0
-        expression_->EmitRISC(stream, regA0, context);
+        // int regA0 = 10; // TODO: hard coded into a0
+        expression_->EmitRISC(stream, destReg, context);
     }
     stream << "ret" << std::endl;
 }
