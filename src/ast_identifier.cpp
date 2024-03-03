@@ -35,8 +35,6 @@ void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &co
         context.freeUpRegister(variable_specs.reg);
     }
 
-    std::cout << "saved reg " << destReg << std::endl;
-
     context.useRegister(destReg); // todo change load to vary in function of size
     stream << "lw " << context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
     variable_specs.reg = destReg;
