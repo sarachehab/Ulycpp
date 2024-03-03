@@ -1,13 +1,9 @@
 #include "ast_assignement.hpp"
 
 void Assignement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    if (declaration_){
-        throw std::runtime_error("Have not implemented declarations with assignements yet (ast_assignement)");
-    } else {
-        int srcReg = target_variable_->fetchVariable(stream, context);
-        value_to_assign_->EmitRISC(stream, srcReg, context);
-        stream << "sw " << context.getRegisterName(srcReg) << ", " << context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(sp)" << std::endl;
-    }
+    int srcReg = target_variable_->fetchVariable(stream, context);
+    value_to_assign_->EmitRISC(stream, srcReg, context);
+    stream << "sw " << context.getRegisterName(srcReg) << ", " << context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(sp)" << std::endl;
 }
 
 void Assignement::Print(std::ostream &stream) const {

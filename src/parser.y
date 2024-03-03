@@ -76,13 +76,13 @@ type_specifier
 	;
 
 init_declarator_list
-	: init_declarator { $$ = $1; }
-	| init_declarator_list ',' init_declarator { $1->PushBack($3); $$ = $1; }
+	: init_declarator 							{ $$ = new NodeList($1); }
+	| init_declarator_list ',' init_declarator 	{ $1->PushBack($3); $$ = $1; }
 	;
 
 init_declarator
-	: declarator { $$ = $1; }
-	| declarator '=' initializer { /*todo: assignement*/ }
+	: declarator 					{ $$ = $1; }
+	| declarator '=' initializer 	{ /*todo: assignement*/ }
 	;
 
 declarator
@@ -90,7 +90,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER { $$ = new FunctionIdentifier($1); }
+	: IDENTIFIER 				{ $$ = new FunctionIdentifier($1); }
 	| direct_declarator '(' ')' { $$ = new DirectDeclarator($1); }
 	;
 
@@ -99,8 +99,8 @@ initializer
 	;
 
 statement
-	: jump_statement { $$ = $1; }
-	| expression_statement { $$ = $1; }
+	: jump_statement 		{ $$ = $1; }
+	| expression_statement 	{ $$ = $1; }
 	;
 
 declaration
@@ -108,8 +108,8 @@ declaration
 	;
 
 declaration_list
-	: declaration	{ $$ = new NodeList($1); }
-	| declaration_list declaration { $1->PushBack($2); $$ = $1; }
+	: declaration					{ $$ = new NodeList($1); }
+	| declaration_list declaration 	{ $1->PushBack($2); $$ = $1; }
 	;
 
 compound_statement
@@ -120,8 +120,8 @@ compound_statement
 	;
 
 statement_list
-	: statement { $$ = new NodeList($1); }
-	| statement_list statement { $1->PushBack($2); $$ = $1; }
+	: statement 				{ $$ = new NodeList($1); }
+	| statement_list statement 	{ $1->PushBack($2); $$ = $1; }
 	;
 
 expression_statement
@@ -130,13 +130,13 @@ expression_statement
 	;
 
 jump_statement
-	: RETURN ';' { $$ = new ReturnStatement(nullptr); }
+	: RETURN ';' 			{ $$ = new ReturnStatement(nullptr); }
 	| RETURN expression ';' { $$ = new ReturnStatement($2); }
 	;
 
 primary_expression
-	: INT_CONSTANT 	{ $$ = new IntConstant($1); }
-	| IDENTIFIER	{ $$ = new VariableIdentifier($1); }
+	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
+	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 
@@ -180,10 +180,10 @@ shift_expression
 
 relational_expression
 	: shift_expression
-	| relational_expression '<' shift_expression { $$ = new LessThan($1, $3); }
-	| relational_expression '>' shift_expression { $$ = new GreaterThan($1, $3); }
-	| relational_expression LE_OP shift_expression { $$ = new LessThanEqual($1, $3); }
-	| relational_expression GE_OP shift_expression { $$ = new GreaterThanEqual($1, $3); }
+	| relational_expression '<' shift_expression 	{ $$ = new LessThan($1, $3); }
+	| relational_expression '>' shift_expression 	{ $$ = new GreaterThan($1, $3); }
+	| relational_expression LE_OP shift_expression 	{ $$ = new LessThanEqual($1, $3); }
+	| relational_expression GE_OP shift_expression 	{ $$ = new GreaterThanEqual($1, $3); }
 	;
 
 equality_expression
@@ -219,7 +219,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression
-	| unary_expression '=' assignment_expression { $$ = new Assignement($1, $3, false); }
+	| unary_expression '=' assignment_expression { $$ = new Assignement($1, $3); }
 	;
 
 expression

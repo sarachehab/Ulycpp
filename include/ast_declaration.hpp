@@ -7,16 +7,16 @@ class Declaration : public Node {
 
 private:
     Node* declaration_specifier_;
-    Node* init_declarator_;
+    Node* init_declarator_list_;
 
 public:
-    Declaration (Node* declaration_specifier, Node* init_declarator)
+    Declaration (Node* declaration_specifier, Node* init_declarator_list)
         : declaration_specifier_(declaration_specifier)
-        , init_declarator_(init_declarator)
+        , init_declarator_list_(init_declarator_list)
     {}
     ~ Declaration() {
         delete declaration_specifier_;
-        delete init_declarator_;
+        delete init_declarator_list_;
     }
 
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;

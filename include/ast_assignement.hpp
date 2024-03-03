@@ -10,10 +10,9 @@ private:
     bool declaration_;
 
 public:
-    Assignement(Node* target_variable, Node* value_to_assign, bool declaration)
+    Assignement(Node* target_variable, Node* value_to_assign)
         : target_variable_(target_variable)
         , value_to_assign_(value_to_assign)
-        , declaration_(declaration)
     {}
     ~ Assignement () {
         delete target_variable_;

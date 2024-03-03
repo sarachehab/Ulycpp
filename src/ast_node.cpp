@@ -26,9 +26,18 @@ int Node::fetchVariable(std::ostream &stream, Context &context) const {
     throw std::runtime_error("fetchVariable should not have been called (ast_node)");
 }
 
+std::vector<Node *> Node::getNodes() const {
+    std::cerr << getNodeType() << std::endl;;
+    throw std::runtime_error("getNodes should not have been called (ast_node)");
+}
+
 std::string Node::getNodeType() const {
     return "Node";
 }
+
+std::vector<Node *> NodeList::getNodes() const {
+        return nodes_;
+    }
 
 
 void NodeList::PushBack(Node *item){
