@@ -231,7 +231,17 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression
-	| unary_expression '=' assignment_expression { $$ = new Assignement($1, $3); }
+	| unary_expression '=' assignment_expression 			{ $$ = new Assignement($1, $3); }
+	| unary_expression MUL_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Multiplication($1, $3)); }
+	| unary_expression DIV_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Division($1, $3)); }
+	| unary_expression MOD_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Modulus($1, $3)); }
+	| unary_expression ADD_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Addition($1, $3)); }
+	| unary_expression SUB_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Substraction($1, $3)); }
+	| unary_expression LEFT_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new LeftShift($1, $3)); }
+	| unary_expression RIGHT_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new RightShift($1, $3)); }
+	| unary_expression AND_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new And($1, $3)); }
+	| unary_expression XOR_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new ExclusiveOr($1, $3)); }
+	| unary_expression OR_ASSIGN assignment_expression 		{ $$ = new Assignement($1, new InclusiveOr($1, $3)); }
 	;
 
 expression
