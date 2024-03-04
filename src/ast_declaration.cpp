@@ -1,4 +1,5 @@
 #include "ast_declaration.hpp"
+#include "ast_assignement.hpp"
 
 
 void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
@@ -14,7 +15,13 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
         int memory_offset = context.increaseCurrentStackSize(memory_cells_allocated);
         // stream << "addi sp, sp, " << -memory_cells_allocated << std::endl;
 
-        context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, -1);
+        Assignement* assignement_ = dynamic_cast<Assignement*>(declaration);
+        if (assignement_ == nullptr){
+            context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, -1);
+        } else {
+            context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, destReg);
+            declaration->EmitRISC(stream, destReg, context);
+        }
     }
 }
 

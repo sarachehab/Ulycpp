@@ -4,12 +4,8 @@ std::string Identifier::getIdentifier() const {
     return identifier_;
 };
 
+
 int Identifier::fetchVariable(std::ostream &stream, Context &context) const {
-    throw std::runtime_error ("tried to fetchVariable in ast_identifier");
-}
-
-
-int VariableIdentifier::fetchVariable(std::ostream &stream, Context &context) const {
     Variable variable_specs = context.getVariableSpecs(identifier_);
 
     if (variable_specs.reg == -1) {
@@ -23,9 +19,15 @@ int VariableIdentifier::fetchVariable(std::ostream &stream, Context &context) co
 }
 
 
-void FunctionIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+void Identifier::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     stream << identifier_;
 }
+
+
+void Identifier::Print(std::ostream &stream) const {
+    stream << identifier_;
+}
+
 
 void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
 
@@ -43,6 +45,3 @@ void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &co
 
 }
 
-void Identifier::Print(std::ostream &stream) const {
-    stream << identifier_;
-}

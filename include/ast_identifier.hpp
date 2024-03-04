@@ -16,23 +16,14 @@ public:
     std::string getIdentifier() const override;
     virtual int fetchVariable(std::ostream &stream, Context &context) const override;
 
-    virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override = 0;
+    virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };
-
-
-class FunctionIdentifier : public Identifier {
-public:
-    using Identifier::Identifier;
-    void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
-};
-
 
 class VariableIdentifier : public Identifier {
 public:
     using Identifier::Identifier;
 
-    int fetchVariable(std::ostream &stream, Context &context) const override;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
 };
 

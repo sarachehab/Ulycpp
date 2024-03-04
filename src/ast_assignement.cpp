@@ -1,5 +1,9 @@
 #include "ast_assignement.hpp"
 
+std::string Assignement::getIdentifier() const {
+    return target_variable_->getIdentifier();
+}
+
 void Assignement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     int srcReg = target_variable_->fetchVariable(stream, context);
     value_to_assign_->EmitRISC(stream, srcReg, context);

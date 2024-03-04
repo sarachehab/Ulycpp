@@ -82,7 +82,7 @@ init_declarator_list
 
 init_declarator
 	: declarator 					{ $$ = $1; }
-	| declarator '=' initializer 	{ /*todo: assignement*/ }
+	| declarator '=' initializer 	{ $$ = new Assignement($1, $3); }
 	;
 
 declarator
@@ -90,7 +90,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER 				{ $$ = new FunctionIdentifier($1); }
+	: IDENTIFIER 				{ $$ = new Identifier($1); }
 	| direct_declarator '(' ')' { $$ = new DirectDeclarator($1); }
 	;
 
@@ -141,7 +141,7 @@ primary_expression
 	;
 
 postfix_expression
-	: primary_expression
+	: primary_expression		{ $$ = $1; }
 	;
 
 argument_expression_list
