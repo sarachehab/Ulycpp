@@ -25,6 +25,9 @@ void ParametersList::EmitRISC(std::ostream &stream, int destReg, Context &contex
     int argReg = 10;
     for (auto parameter : nodes_){
         parameter->EmitRISC(stream, argReg++, context);
+        if (argReg > 17) {
+            std::runtime_error("Have not implemented functions taking more than 7 arguments. Check ast_parameters.cpp");
+        }
     }
 }
 
