@@ -19,6 +19,9 @@
 #include "ast_binary_operation.hpp"
 #include "ast_unary_operation.hpp"
 #include "ast_arithmetic_operation.hpp"
+#include "ast_logical_operation.hpp"
+#include "ast_composite_comparaison.hpp"
+#include "ast_comparaison.hpp"
 
 #include "ast_declaration.hpp"
 #include "ast_assignement.hpp"

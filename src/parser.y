@@ -200,6 +200,8 @@ relational_expression
 
 equality_expression
 	: relational_expression
+	| equality_expression EQ_OP relational_expression { $$ = new Equal($1, $3); }
+	| equality_expression NE_OP relational_expression { $$ = new NotEqual($1, $3); }
 	;
 
 and_expression
@@ -219,10 +221,12 @@ inclusive_or_expression
 
 logical_and_expression
 	: inclusive_or_expression
+	| logical_and_expression AND_OP inclusive_or_expression { $$ = new LogicalAnd($1, $3); }
 	;
 
 logical_or_expression
 	: logical_and_expression
+	| logical_or_expression OR_OP logical_and_expression { $$ = new LogicalOr($1, $3); }
 	;
 
 conditional_expression

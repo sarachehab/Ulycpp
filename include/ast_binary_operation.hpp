@@ -5,7 +5,7 @@
 
 class BinaryOperation : public Node {
 
-private:
+protected:
     Node* left_;
     Node* right_;
 

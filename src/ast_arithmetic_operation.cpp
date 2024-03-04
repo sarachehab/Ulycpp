@@ -117,7 +117,7 @@ std::string LessThan::getOperation() const {
 
 
 std::string LessThanEqual::getInstruction() const {
-    return "sle "; //need to change
+    return "slt ";
 }
 
 std::string LessThanEqual::getOperation() const {
@@ -135,9 +135,45 @@ std::string GreaterThan::getOperation() const {
 
 
 std::string GreaterThanEqual::getInstruction() const {
-    return "sge "; //need to change
+    return "sgt ";
 }
 
 std::string GreaterThanEqual::getOperation() const {
     return " >= ";
+}
+
+
+std::string Equal::getInstruction() const {
+    return "seqz ";
+}
+
+std::string Equal::getOperation() const {
+    return " == ";
+}
+
+
+std::string NotEqual::getInstruction() const {
+    return "snez ";
+}
+
+std::string NotEqual::getOperation() const {
+    return " != ";
+}
+
+
+std::string LogicalOr::getInstruction() const {
+    return "or ";
+}
+
+std::string LogicalOr::getOperation() const {
+    return " || ";
+}
+
+
+std::string LogicalAnd::getInstruction() const {
+    return "and ";
+}
+
+std::string LogicalAnd::getOperation() const {
+    return " && ";
 }

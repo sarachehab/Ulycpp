@@ -3,6 +3,9 @@
 
 #include "ast_binary_operation.hpp"
 #include "ast_unary_operation.hpp"
+#include "ast_composite_comparaison.hpp"
+#include "ast_comparaison.hpp"
+#include "ast_logical_operation.hpp"
 
 class InclusiveOr : public BinaryOperation {
 public:
@@ -104,9 +107,9 @@ public:
     std::string getInstruction() const override;
 };
 
-class LessThanEqual : public BinaryOperation {
+class LessThanEqual : public CompositeComparaison {
 public:
-    using BinaryOperation::BinaryOperation;
+    using CompositeComparaison::CompositeComparaison;
     std::string getOperation() const override;
     std::string getInstruction() const override;
 };
@@ -118,11 +121,40 @@ public:
     std::string getInstruction() const override;
 };
 
-class GreaterThanEqual : public BinaryOperation {
+class GreaterThanEqual : public CompositeComparaison {
 public:
-    using BinaryOperation::BinaryOperation;
+    using CompositeComparaison::CompositeComparaison;
     std::string getOperation() const override;
     std::string getInstruction() const override;
 };
+
+class Equal : public Comparaison {
+public:
+    using Comparaison::Comparaison;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
+class NotEqual : public Comparaison {
+public:
+    using Comparaison::Comparaison;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
+class LogicalAnd : public LogicalOperation {
+public:
+    using LogicalOperation::LogicalOperation;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
+class LogicalOr : public LogicalOperation {
+public:
+    using LogicalOperation::LogicalOperation;
+    std::string getOperation() const override;
+    std::string getInstruction() const override;
+};
+
 
 #endif
