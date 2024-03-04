@@ -8,9 +8,17 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, int destReg, Context &cont
 {
     identifier_->EmitRISC(stream, destReg, context);
     stream << ":" << std::endl;
+    if (parameter_list_ != nullptr) {
+        parameter_list_->EmitRISC(stream, destReg, context);
+    }
 }
 
 void DirectDeclarator::Print(std::ostream &stream) const
 {
     identifier_->Print(stream);
+    stream << "(";
+    if (parameter_list_ != nullptr) {
+        parameter_list_->Print(stream);
+    }
+    stream << ")";
 }

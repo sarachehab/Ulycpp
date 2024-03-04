@@ -9,7 +9,6 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
 
     for (auto declaration : init_declarator_list_->getNodes()) {
         std::string identifier = declaration->getIdentifier();
-        std::cout << identifier << std::endl;
 
         // adjust stack
         int memory_offset = context.increaseCurrentStackSize(memory_cells_allocated);

@@ -90,9 +90,21 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER 				{ $$ = new Identifier($1); }
-	| direct_declarator '(' ')' { $$ = new DirectDeclarator($1); }
+	: IDENTIFIER 								{ $$ = new Identifier($1); }
+	| direct_declarator '(' ')' 				{ $$ = new DirectDeclarator($1); }
+	| direct_declarator '(' parameter_list ')'	{ $$ = new DirectDeclarator($1, $3); } // todo
 	;
+
+
+parameter_list
+	: parameter_declaration						{ $$ = new ParametersList($1); }
+	| parameter_list ',' parameter_declaration	{ $1->PushBack($3); $$ = $1; }
+	;
+
+parameter_declaration
+	: declaration_specifiers declarator			{ $$ = new Parameter($1, $2); } //todo
+	;
+
 
 initializer
 	: assignment_expression { $$ = $1; }

@@ -23,6 +23,8 @@
 #include "ast_declaration.hpp"
 #include "ast_assignement.hpp"
 
+#include "ast_parameter.hpp"
+
 extern Node *ParseAST(std::string file_name);
 
 #endif
