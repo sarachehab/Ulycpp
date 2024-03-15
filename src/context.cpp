@@ -29,7 +29,7 @@ int Context::allocateRegister(std::ostream &stream){
     }
 
     // if all registers are used up, free up a register dating from oldest scope and use it
-    for (auto stack : scopes) {
+    for (auto stack : scopes) { //scopes is vector of Scope (<string, Variable> variable_bindings, int current_scope_size_)
         auto scope_variable_bindings = stack.variable_bindings;
 
         for (auto it = scope_variable_bindings.begin(); it != scope_variable_bindings.end(); it++){
@@ -151,7 +151,7 @@ std::string Context::getEndLabel() const {
 
 void Context::enterFunction() { // TODO: Review
     // define new scope
-    enterScope(0);
+    enterScope(8); // to save ra and s0
 
     // define end_label for returns
     std::string function_end_label = createLabel("function_end");

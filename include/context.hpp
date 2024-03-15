@@ -5,8 +5,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <map>
-#include <stack>
+#include <stack> //Last IN First OUT
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being

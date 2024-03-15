@@ -6,8 +6,8 @@ std::string FunctionDeclarator::getIdentifier() const {
 
 void FunctionDeclarator::EmitRISC(std::ostream &stream, int destReg, Context &context) const
 {
-    identifier_->EmitRISC(stream, destReg, context);
-    stream << ":" << std::endl;
+    // identifier_->EmitRISC(stream, destReg, context);
+    // stream << ":" << std::endl;
     if (parameter_list_ != nullptr) {
         parameter_list_->EmitRISC(stream, destReg, context);
     }

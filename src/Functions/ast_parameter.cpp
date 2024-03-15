@@ -9,7 +9,7 @@ void Parameter::EmitRISC(std::ostream &stream, int destReg, Context &context) co
     std::string identifier = init_declarator_list_->getIdentifier();
 
     context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, -1);
-    stream << "sw " << context.getRegisterName(destReg) << ", " << -memory_offset << "(sp)" << std::endl;
+    stream << "sw " << context.getRegisterName(destReg) << ", " << -memory_offset << "(s0)" << std::endl;
 
 }
 
