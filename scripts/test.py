@@ -394,6 +394,11 @@ def run_tests(args, xml_file: JUnitXMLFile):
     Runs tests against compiler.
     """
     drivers = list(Path(args.dir).rglob("*_driver.c"))
+
+    if args.exclude:
+        exclude_path = args.exclude.resolve()
+        drivers = [driver for driver in drivers if not driver.resolve().is_relative_to(exclude_path)]
+
     drivers = sorted(drivers, key=lambda p: (p.parent.name, p.name))
     results = []
 
@@ -472,6 +477,11 @@ def parse_args():
         default=False,
         help="Run with coverage if you want to know which part of your code is "
         "executed when running your compiler. See docs/coverage.md"
+    )
+    parser.add_argument(
+        "-e", "--exclude",
+        type=Path,
+        help="Exclude a specific folder from the tests"
     )
     return parser.parse_args()
 

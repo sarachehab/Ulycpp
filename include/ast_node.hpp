@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "ast_context.hpp"
+#include "context.hpp"
 
 class Node {
 protected:
@@ -48,5 +48,16 @@ public:
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
 };
+
+
+class EmptyNode : public Node {
+public:
+    EmptyNode(){}
+    ~EmptyNode(){}
+
+    virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override {}
+    virtual void Print(std::ostream &stream) const override {}
+};
+
 
 #endif

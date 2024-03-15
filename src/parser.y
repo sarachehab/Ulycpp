@@ -82,7 +82,7 @@ init_declarator_list
 
 init_declarator
 	: declarator 					{ $$ = $1; }
-	| declarator '=' initializer 	{ $$ = new Assignement($1, $3); }
+	| declarator '=' initializer 	{ $$ = new Assignment($1, $3); }
 	;
 
 declarator
@@ -91,8 +91,8 @@ declarator
 
 direct_declarator
 	: IDENTIFIER 								{ $$ = new Identifier($1); }
-	| direct_declarator '(' ')' 				{ $$ = new DirectDeclarator($1); }
-	| direct_declarator '(' parameter_list ')'	{ $$ = new DirectDeclarator($1, $3); } // todo
+	| direct_declarator '(' ')' 				{ $$ = new FunctionDeclarator($1); }
+	| direct_declarator '(' parameter_list ')'	{ $$ = new FunctionDeclarator($1, $3); }
 	;
 
 
@@ -102,7 +102,7 @@ parameter_list
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator			{ $$ = new Parameter($1, $2); } //todo
+	: declaration_specifiers declarator			{ $$ = new Parameter($1, $2); }
 	;
 
 
@@ -113,6 +113,10 @@ initializer
 statement
 	: jump_statement 		{ $$ = $1; }
 	| expression_statement 	{ $$ = $1; }
+	| selection_statement	{ $$ = $1; }
+	| compound_statement	{ $$ = $1; }
+	| iteration_statement	{ $$ = $1; }
+	| labeled_statement		{ $$ = $1; }
 	;
 
 declaration
@@ -125,10 +129,10 @@ declaration_list
 	;
 
 compound_statement
-	: '{' statement_list '}' 					{ $$ = $2; }
-	| '{' declaration_list statement_list '}'	{ $$ = new NodeList($2); $$->PushBack($3); }
-	| '{' declaration_list '}'					{ $$ = $2; }
-	| '{' '}'									{ $$ = nullptr; /*todo: review*/ }
+	: '{' statement_list '}' 					{ $$ = new CompoundStatement($2); }
+	| '{' declaration_list statement_list '}'	{ $$ = new CompoundStatement($2); $$->PushBack($3); }
+	| '{' declaration_list '}'					{ $$ = new CompoundStatement($2); }
+	| '{' '}'									{ $$ = new CompoundStatement(nullptr); }
 	;
 
 statement_list
@@ -137,13 +141,15 @@ statement_list
 	;
 
 expression_statement
-	: ';'
+	: ';'			 { $$ = new EmptyNode(); }
 	| expression ';' { $$ = $1; }
 	;
 
 jump_statement
 	: RETURN ';' 			{ $$ = new ReturnStatement(nullptr); }
 	| RETURN expression ';' { $$ = new ReturnStatement($2); }
+	| CONTINUE ';'			{ $$ = new ContinueStatement(); }
+	| BREAK ';'				{ $$ = new BreakStatement(); }
 	;
 
 primary_expression
@@ -154,17 +160,21 @@ primary_expression
 
 postfix_expression
 	: primary_expression		{ $$ = $1; }
+	| postfix_expression INC_OP	{ $$ = new RightIncrement($1); }
+	| postfix_expression DEC_OP	{ $$ = new RightDecrement($1); }
 	;
 
 argument_expression_list
-	: assignment_expression
+	: assignment_expression	{ $$ = $1; }
 	;
 
 unary_expression
 	: postfix_expression
-	| '+' cast_expression 	{ $$ = $2; }
-	| '-' cast_expression	{ $$ = new Negate($2); }
-	| '~' cast_expression	{ $$ = new OneComplement($2); }
+	| '+' cast_expression 		{ $$ = $2; }
+	| '-' cast_expression		{ $$ = new Negate($2); }
+	| '~' cast_expression		{ $$ = new OneComplement($2); }
+	| INC_OP unary_expression	{ $$ = new LeftIncrement($2); }
+	| DEC_OP unary_expression	{ $$ = new LeftDecrement($2); }
 	;
 
 cast_expression
@@ -230,28 +240,50 @@ logical_or_expression
 	;
 
 conditional_expression
-	: logical_or_expression
+	: logical_or_expression												{ $$ = $1; }
+	| logical_or_expression '?' expression ':' conditional_expression	{ $$ = new IfElseStatement($1, $3, $5); }
 	;
 
 assignment_expression
 	: conditional_expression
-	| unary_expression '=' assignment_expression 			{ $$ = new Assignement($1, $3); }
-	| unary_expression MUL_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Multiplication($1, $3)); }
-	| unary_expression DIV_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Division($1, $3)); }
-	| unary_expression MOD_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Modulus($1, $3)); }
-	| unary_expression ADD_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Addition($1, $3)); }
-	| unary_expression SUB_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new Substraction($1, $3)); }
-	| unary_expression LEFT_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new LeftShift($1, $3)); }
-	| unary_expression RIGHT_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new RightShift($1, $3)); }
-	| unary_expression AND_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new And($1, $3)); }
-	| unary_expression XOR_ASSIGN assignment_expression 	{ $$ = new Assignement($1, new ExclusiveOr($1, $3)); }
-	| unary_expression OR_ASSIGN assignment_expression 		{ $$ = new Assignement($1, new InclusiveOr($1, $3)); }
+	| unary_expression '=' assignment_expression 			{ $$ = new Assignment($1, $3); }
+	| unary_expression MUL_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new Multiplication($1, $3)); }
+	| unary_expression DIV_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new Division($1, $3)); }
+	| unary_expression MOD_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new Modulus($1, $3)); }
+	| unary_expression ADD_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new Addition($1, $3)); }
+	| unary_expression SUB_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new Substraction($1, $3)); }
+	| unary_expression LEFT_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new LeftShift($1, $3)); }
+	| unary_expression RIGHT_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new RightShift($1, $3)); }
+	| unary_expression AND_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new And($1, $3)); }
+	| unary_expression XOR_ASSIGN assignment_expression 	{ $$ = new Assignment($1, new ExclusiveOr($1, $3)); }
+	| unary_expression OR_ASSIGN assignment_expression 		{ $$ = new Assignment($1, new InclusiveOr($1, $3)); }
 	;
 
 expression
-	: assignment_expression
+	: assignment_expression								{ $$ = $1; }
 	;
 
+constant_expression
+	: conditional_expression
+	;
+
+selection_statement
+	: IF '(' expression ')' statement					{ $$ = new IfStatement($3, $5); }
+	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStatement($3, $5, $7); }
+	| SWITCH '(' expression ')' statement				{ /*$$ = new Switch($3, $5);*/ }
+	;
+
+iteration_statement
+	: WHILE '(' expression ')' statement												{ $$ = new WhileLoop($3, $5); }
+	| DO statement WHILE '(' expression ')' ';'											{ $$ = new DoWhileLoop($5, $2); }
+	| FOR '(' expression_statement expression_statement ')' statement 					{ $$ = new ForLoop($3, $4, $6); }
+	| FOR '(' expression_statement expression_statement expression ')' statement		{ $$ = new ForLoop($3, $4, $5, $7); }
+	;
+
+labeled_statement
+	: CASE constant_expression ':' statement	{ /*std::cerr << "case defined" << std::endl; $$ = new Case($2, $4);*/ }
+	| DEFAULT ':' statement						{ /*std::cerr << "default defined" << std::endl; $$ = new Default($3);*/ }
+	;
 
 %%
 

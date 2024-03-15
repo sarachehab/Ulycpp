@@ -10,7 +10,6 @@ int Identifier::fetchVariable(std::ostream &stream, Context &context) const {
 
     if (variable_specs.reg == -1) {
         int allocated_register = context.allocateRegister(stream);
-        context.useRegister(allocated_register);
         variable_specs.reg = allocated_register;
     }
 
@@ -33,15 +32,10 @@ void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &co
 
     Variable variable_specs = context.getVariableSpecs(identifier_);
 
-    if (variable_specs.reg != -1) {
-        context.freeUpRegister(variable_specs.reg);
-    }
-
-    context.useRegister(destReg); // todo change load to vary in function of size
+    // TODO: Load from register file if variable already there
     stream << "lw " << context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
-    variable_specs.reg = destReg;
+    variable_specs.reg = destReg; 
 
     context.updateVariableSpecs(identifier_, variable_specs);
-
 }
 
