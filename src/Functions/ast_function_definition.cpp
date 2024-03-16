@@ -11,14 +11,18 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     context.enterFunction();
 
     stream << declarator_->getIdentifier() << ":" << std::endl;
+    int tmp = context.allocateRegister(stream);
+
 
     // header of the function
-    stream << "addi " << "sp, " << "sp " << -stack_size << std::endl;
+    stream << "li " << context.getRegisterName(tmp) << ", " << -stack_size << std::endl;
+    stream << "sub " << "sp, " << "sp, " << context.getRegisterName(tmp) << std::endl;
     stream << "sw " << "ra, " << stack_size - 4 << "(sp)" << std::endl;
     stream << "sw " << "s0, " << stack_size - 8 << "(sp)" << std::endl;
     stream << "addi " << "s0, " << "sp, " << stack_size << std::endl;
 
     declarator_->EmitRISC(stream, destReg, context);
+    context.freeUpRegister(tmp);
 
     if (compound_statement_ != nullptr){
         // todo: potentially fix this, saving automatically into register a0
@@ -32,7 +36,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     // footer of the function
     stream << "lw " << "ra, " << stack_size - 4 << "(sp)" << std::endl;
     stream << "lw " << "s0, " << stack_size - 8 << "(sp)" << std::endl;
-    stream << "addi " << "sp, " << "sp " << stack_size << std::endl;
+    stream << "addi " << "sp, " << "sp, " << stack_size << std::endl;
     stream << "jr " << "ra" << std::endl;
 
 }
