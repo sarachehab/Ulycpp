@@ -84,7 +84,6 @@ public:
     // find variable in bindings
     int findVariableScope(std::string name) const ;
 
-
     // get variable specs
     Variable getVariableSpecs(std::string name) const ;
 
@@ -93,6 +92,9 @@ public:
 
     // modifiy stack size when allocating memory
     int increaseCurrentStackSize(int memory_cells_allocated);
+
+    // flush register file
+    void FlushRegisters();
 
     // create label for jumps
     std::string createLabel(std::string name) const;

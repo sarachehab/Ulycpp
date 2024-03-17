@@ -11,6 +11,7 @@ void FunctionCall::EmitRISC(std::ostream &stream, int destReg, Context &context)
         arguments_->EmitRISC(stream, destReg, context);
     }
     stream << "call " << function_name_->getIdentifier() << std::endl;
+    context.FlushRegisters();
     stream << "nop " << std::endl;
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(10) << std::endl;
     std::cerr << "COMPILER: Done function call print" << std::endl;

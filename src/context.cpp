@@ -100,6 +100,17 @@ void Context::updateVariableSpecs(std::string name, Variable variable_specs){
     scopes[scope_index].variable_bindings[name] = variable_specs;
 }
 
+void Context::FlushRegisters() {
+    for (Scope& scope : scopes) {
+        for (auto& varPair : scope.variable_bindings) {
+            if (varPair.second.reg != -1){
+                freeUpRegister(varPair.second.reg);
+                varPair.second.reg = -1;
+            }
+        }
+    }
+}
+
 
 int Context::increaseCurrentStackSize(int memory_cells_allocated) {
     scopes.back().current_scope_size += memory_cells_allocated;
