@@ -18,10 +18,9 @@ void FunctionCall::EmitRISC(std::ostream &stream, int destReg, Context &context)
 
 
 void FunctionCall::Print(std::ostream &stream) const {
-    // std::cerr << "here 1" << std::endl;
-    // stream << function_name_a->getIdentifier() << "(";
-    // std::cerr << "here 2" << std::endl;
-    // arguments_->Print(stream);
-    // std::cerr << "here 3" << std::endl;
-    // stream << ")";
+    stream << function_name_->getIdentifier() << "(";
+    if (arguments_ != nullptr){
+        arguments_->Print(stream);
+    }
+    stream << ")";
 }
