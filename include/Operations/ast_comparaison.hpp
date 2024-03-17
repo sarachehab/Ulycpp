@@ -12,7 +12,9 @@ public:
     ~Comparaison(){}
 
     virtual std::string getOperation() const override = 0;
-    virtual std::string getInstruction() const override = 0;
+    virtual std::string getInstruction(Specifier type) const override = 0;
+
+    Specifier getType(Context& context) const override;
 
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
     void Print(std::ostream &stream) const override;
@@ -26,7 +28,7 @@ public:
     ~CompositeComparaison(){}
 
     virtual std::string getOperation() const override = 0;
-    virtual std::string getInstruction() const override = 0;
+    virtual std::string getInstruction(Specifier type) const override = 0;
 
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
     void Print(std::ostream &stream) const override;
@@ -38,7 +40,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~LessThan(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -47,7 +49,7 @@ public:
     using CompositeComparaison::CompositeComparaison;
     ~LessThanEqual(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -56,7 +58,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~GreaterThan(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -65,7 +67,7 @@ public:
     using CompositeComparaison::CompositeComparaison;
     ~GreaterThanEqual(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -74,7 +76,7 @@ public:
     using Comparaison::Comparaison;
     ~Equal(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -83,7 +85,7 @@ public:
     using Comparaison::Comparaison;
     ~NotEqual(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 #endif

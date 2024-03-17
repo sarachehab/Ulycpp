@@ -10,9 +10,21 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
 
     declarator_->EmitRISC(stream, destReg, context);
 
+    int returnReg;
+    switch (declaration_specifier_->getType(context)){
+        case Specifier::_int:
+            returnReg = 10;
+            break;
+        case Specifier::_float:
+        case Specifier::_double:
+            returnReg = 42;
+            break;
+        default: throw std::runtime_error("Type not recognised in FunctionDefintion");
+    }
+
     if (compound_statement_ != nullptr){
         // todo: potentially fix this, saving automatically into register a0
-        compound_statement_->EmitRISC(stream, destReg, context);
+        compound_statement_->EmitRISC(stream, returnReg, context);
     }
     
     stream << context.getFunctionEndLabel() << ":" << std::endl;
@@ -21,7 +33,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
 }
 
 void FunctionDefinition::Print(std::ostream &stream) const {
-    declaration_specifiers_->Print(stream);
+    declaration_specifier_->Print(stream);
     stream << " ";
 
     declarator_->Print(stream);

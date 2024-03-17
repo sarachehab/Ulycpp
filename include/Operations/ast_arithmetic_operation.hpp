@@ -9,7 +9,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~Addition(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -18,7 +18,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~Substraction(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -27,7 +27,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~Multiplication(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -36,7 +36,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~Division(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -45,7 +45,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~Modulus(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 

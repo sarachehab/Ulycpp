@@ -14,10 +14,11 @@ public:
     Node(){};
     virtual ~Node();
 
-    virtual Specifier getType() const;
+    virtual Specifier getType(Context& context) const;
+
     virtual std::string getIdentifier() const;
     virtual void PushBack(Node* item);
-    virtual int fetchVariable(std::ostream &stream, Context &context) const;
+    virtual int fetchVariable(Context &context) const;
 
     virtual std::string getNodeType() const;
     virtual std::vector<Node *> getNodes() const;

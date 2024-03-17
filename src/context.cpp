@@ -18,10 +18,23 @@ void Context::freeUpRegister(int i){
     }
 }
 
-int Context::allocateRegister(std::ostream &stream){
+int Context::allocateRegister(Specifier type){
+
+    // define range of registers to chose form
+    int start_reg_file;
+    switch(type){
+        case Specifier::_int:
+            start_reg_file = 0;
+            break;
+        case Specifier::_float:
+        case Specifier::_double:
+            start_reg_file = 32;
+            break;
+        default: throw std::runtime_error("unrecognised type in allocateRegister");
+    }
 
     // find unused temporary register
-    for (int i = 0; i < 32; i++){
+    for (int i = start_reg_file; i < start_reg_file+32; i++){
         if (!used_registers[i]){
             useRegister(i);
             return i;
@@ -174,4 +187,46 @@ std::string Context::getFunctionEndLabel() const {
     }
 
     return functions.top().end_label;
+}
+
+
+void Context::defineFloat(double number) {
+    int intRepresentation;
+    std::memcpy(&intRepresentation, &number, sizeof(double));
+    floats_representation.push_back(number);
+}
+
+unsigned int Context::getFloatLabelNumber() const {
+    return floats_representation.size() - 1;
+}
+
+void Context::printFloatImmediates(std::ostream& stream) const {
+    for (long unsigned int index = 0; index < floats_representation.size(); index++){
+        stream << ".LC" << index << ":" << std::endl;
+        stream << "\t .word " << floats_representation[index] << std::endl;
+    }
+}
+
+std::string Context::getStoreInstruction(Specifier type) const {
+    switch (type) {
+        case Specifier::_int:
+            return "sw";
+        case Specifier::_float:
+            return "fsw";
+        case Specifier::_double:
+            return "fsd";
+        default: throw std::runtime_error("type not recognised in assignement emitrisc");
+    }
+}
+
+std::string Context::getLoadInstruction(Specifier type) const {
+    switch (type) {
+        case Specifier::_int:
+            return "lw";
+        case Specifier::_float:
+            return "flw";
+        case Specifier::_double:
+            return "fld";
+        default: throw std::runtime_error("type not recognised in assignement emitrisc");
+    }
 }

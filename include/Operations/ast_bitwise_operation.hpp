@@ -10,7 +10,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~InclusiveOr(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -19,7 +19,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~ExclusiveOr(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -28,7 +28,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~And(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -37,7 +37,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~LeftShift(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -46,7 +46,7 @@ public:
     using BinaryOperation::BinaryOperation;
     ~RightShift(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -55,7 +55,7 @@ public:
     using UnaryOperation::UnaryOperation;
     ~OneComplement(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 

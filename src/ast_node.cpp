@@ -6,7 +6,7 @@ Node::~Node(){
     }
 }
 
-Specifier Node::getType() const {
+Specifier Node::getType(Context& context) const {
     std::cerr << getNodeType() << std::endl;;
     throw std::runtime_error("getType should not have been called (ast_node)");
 }
@@ -21,7 +21,7 @@ void Node::PushBack(Node* item) {
     throw std::runtime_error("PushBack should not have been called (ast_node)");
 }
 
-int Node::fetchVariable(std::ostream &stream, Context &context) const {
+int Node::fetchVariable(Context &context) const {
     std::cerr << getNodeType() << std::endl;;
     throw std::runtime_error("fetchVariable should not have been called (ast_node)");
 }
