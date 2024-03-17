@@ -1,23 +1,26 @@
 #ifndef  FUNCTION_CALL_HPP
 #define  FUNCTION_CALL_HPP
 
-#include "ast_node.hpp"
+#include "../ast_node.hpp"
 
 class FunctionCall : public Node
 {
 protected:
-    Node* identifier_;
+    Node* function_name_;
     Node* arguments_;
 
 public:
-    FunctionCall(Node* identifier): identifier_(identifier) {delete identifier;}
-    FunctionCall(Node* identifier, Node* arguments)
-        : identifier_(identifier)
+    FunctionCall(Node* function_name)
+        : function_name_(function_name) 
+        , arguments_(nullptr)
+    {}
+    FunctionCall(Node* function_name, Node* arguments)
+        : function_name_(function_name)
         , arguments_(arguments)
     {}
 
     ~FunctionCall() {
-        delete identifier_;
+        delete function_name_;
         delete arguments_;
     }
 

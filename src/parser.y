@@ -56,7 +56,7 @@ ROOT
     : translation_unit { g_root = $1; }
 
 translation_unit
-	: external_declaration { $$ = $1; }
+	: external_declaration 					{ $$ = new NodeList($1); }
 	| translation_unit external_declaration { $1->PushBack($2); $$ = $1; }
 	;
 
@@ -149,7 +149,7 @@ expression_statement
 
 jump_statement
 	: RETURN ';' 			{ $$ = new ReturnStatement(nullptr); }
-	| RETURN expression ';' { $$ = new ReturnStatement($2); }
+	| RETURN expression ';' { std::cerr << "PARSER: defined return with expr" << std::endl; $$ = new ReturnStatement($2); }
 	| CONTINUE ';'			{ $$ = new ContinueStatement(); }
 	| BREAK ';'				{ $$ = new BreakStatement(); }
 	;
@@ -161,15 +161,15 @@ primary_expression
 	;
 
 postfix_expression
-	: primary_expression		{ $$ = $1; }
-	| postfix_expression '(' ')' { $$ = new FunctionCall($1)/*TODO*/; }
-	| postfix_expression '(' argument_expression_list ')'	{ $$ = new FunctionCall($1, $3)/*TODO*/; }
-	| postfix_expression INC_OP	{ $$ = new RightIncrement($1); }
-	| postfix_expression DEC_OP	{ $$ = new RightDecrement($1); }
+	: primary_expression										{ $$ = $1; }
+	| postfix_expression '(' ')' 								{ std::cerr << "PARSER: function called here" << std::endl; $$ = new FunctionCall($1); }
+	| postfix_expression '(' argument_expression_list ')'		{ $$ = new FunctionCall($1, $3); }
+	| postfix_expression INC_OP									{ $$ = new RightIncrement($1); }
+	| postfix_expression DEC_OP									{ $$ = new RightDecrement($1); }
 	;
 
 argument_expression_list
-	: assignment_expression	{ $$ = new ArgumentList($1)/*TODO*/; }
+	: assignment_expression	{ $$ = new ArgumentList($1); }
 	| argument_expression_list ',' assignment_expression { $1->PushBack($3); $$ = $1; }
 
 	;

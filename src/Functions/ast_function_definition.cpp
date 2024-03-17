@@ -13,25 +13,26 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     stream << declarator_->getIdentifier() << ":" << std::endl;
 
     // header of the function
-    stream << "addi " << "sp, " << "sp, " << -stack_size << std::endl;
-    stream << "sw " << "ra, " << stack_size - 4 << "(sp)" << std::endl;
-    stream << "sw " << "s0, " << stack_size - 8 << "(sp)" << std::endl;
-    stream << "addi " << "s0, " << "sp, " << stack_size << std::endl;
+    stream << "addi sp, sp, " << -stack_size << std::endl;
+    stream << "sw ra, " << stack_size - 4 << "(sp)" << std::endl;
+    stream << "sw s0, " << stack_size - 8 << "(sp)" << std::endl;
+    stream << "addi s0, sp, " << stack_size << std::endl;
 
     declarator_->EmitRISC(stream, destReg, context);
 
     if (compound_statement_ != nullptr){
         // todo: potentially fix this, saving automatically into register a0
-        compound_statement_->EmitRISC(stream, destReg, context);
+        compound_statement_->EmitRISC(stream, 15, context);
     }
 
     stream << context.getFunctionEndLabel() << ":" << std::endl;
     context.exitFunction();
 
     // footer of the function
-    stream << "lw " << "ra, " << stack_size - 4 << "(sp)" << std::endl;
-    stream << "lw " << "s0, " << stack_size - 8 << "(sp)" << std::endl;
-    stream << "addi " << "sp, " << "sp, " << stack_size << std::endl;
+    stream << "lw ra, " << stack_size - 4 << "(sp)" << std::endl;
+    stream << "lw s0, " << stack_size - 8 << "(sp)" << std::endl;
+    stream << "addi sp, sp, " << stack_size << std::endl;
+    stream << "mv " << context.getRegisterName(10) << ", " << context.getRegisterName(15) << std::endl;
     stream << "ret" << std::endl;
 
 }

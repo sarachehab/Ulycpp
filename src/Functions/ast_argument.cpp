@@ -1,8 +1,8 @@
 #include "../../include/Functions/ast_argument.hpp"
 
 void ArgumentList::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+    int reg = 10;
     for (auto arg : nodes_){
-        int reg = 0;
         arg->EmitRISC(stream, reg++, context);
     }
 }
