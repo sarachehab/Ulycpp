@@ -57,10 +57,12 @@ ROOT
 
 translation_unit
 	: external_declaration { $$ = $1; }
+	| translation_unit external_declaration { $1->PushBack($2); $$ = $1; }
 	;
 
 external_declaration
-	: function_definition { $$ = $1; }
+	: function_definition 	{ $$ = $1; }
+	| declaration			{ $$ = $1; }
 	;
 
 function_definition
@@ -160,12 +162,16 @@ primary_expression
 
 postfix_expression
 	: primary_expression		{ $$ = $1; }
+	| postfix_expression '(' ')' { $$ = new FunctionCall($1)/*TODO*/; }
+	| postfix_expression '(' argument_expression_list ')'	{ $$ = new FunctionCall($1, $3)/*TODO*/; }
 	| postfix_expression INC_OP	{ $$ = new RightIncrement($1); }
 	| postfix_expression DEC_OP	{ $$ = new RightDecrement($1); }
 	;
 
 argument_expression_list
-	: assignment_expression	{ $$ = $1; }
+	: assignment_expression	{ $$ = new ArgumentList($1)/*TODO*/; }
+	| argument_expression_list ',' assignment_expression { $1->PushBack($3); $$ = $1; }
+
 	;
 
 unary_expression
