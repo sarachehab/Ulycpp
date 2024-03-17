@@ -53,7 +53,7 @@ void RightIncrement::EmitRISC(std::ostream &stream, int destReg, Context &contex
     value_->EmitRISC(stream, srcReg, context);
 
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(srcReg) << std::endl;
-    stream <<"addi " << context.getRegisterName(srcReg) << ", "
+    stream << "addi " << context.getRegisterName(srcReg) << ", "
         << context.getRegisterName(srcReg) << ", 1" << std::endl;
     stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
 

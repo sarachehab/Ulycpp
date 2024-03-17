@@ -4,9 +4,6 @@
 #include "ast_node.hpp"
 
 class Constant : public Node {
-private:
-    int value_;
-    Specifier type_;
 
 public:
     Constant(){}
@@ -14,7 +11,7 @@ public:
 
     virtual Specifier getType(Context &context) const override = 0;
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override = 0;
-    void Print(std::ostream &stream) const override;
+    void Print(std::ostream &stream) const override = 0;
 };
 
 class IntConstant : public Constant {
@@ -29,20 +26,22 @@ public:
 
     Specifier getType(Context &context) const override;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
+    void Print(std::ostream &stream) const override;
 };
 
 class FloatConstant : public Constant {
 private:
-    double value_;
+    float value_;
 
 public:
-    FloatConstant(double value) 
+    FloatConstant(float value) 
         : value_(value)
     {}
     ~FloatConstant(){}
 
     Specifier getType(Context &context) const override;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
+    void Print(std::ostream &stream) const override;
 };
 
 #endif

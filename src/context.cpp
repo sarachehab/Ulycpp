@@ -190,10 +190,12 @@ std::string Context::getFunctionEndLabel() const {
 }
 
 
-void Context::defineFloat(double number) {
-    int intRepresentation;
-    std::memcpy(&intRepresentation, &number, sizeof(double));
-    floats_representation.push_back(number);
+void Context::defineFloat(float number) {
+    FloatIntUnion u;
+    u.f = number;               // Set as float
+    uint32_t intValue = u.i;    // Access as unsigned int
+    std::string numberStr = std::to_string(intValue);
+    floats_representation.push_back(numberStr);
 }
 
 unsigned int Context::getFloatLabelNumber() const {

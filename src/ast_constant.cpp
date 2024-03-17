@@ -15,11 +15,15 @@ void FloatConstant::EmitRISC(std::ostream &stream, int destReg, Context &context
 
     int addrReg = context.allocateRegister(Specifier::_int);
     stream << "lui " << context.getRegisterName(addrReg) << ", %hi(.LC" << context.getFloatLabelNumber() << ")" << std::endl; // todo: change value
-    stream << "fld " << context.getRegisterName(destReg) << ", %lo(.LC" << context.getFloatLabelNumber() << ")(" << context.getRegisterName(addrReg) << ")" << std::endl;
+    stream << "flw " << context.getRegisterName(destReg) << ", %lo(.LC" << context.getFloatLabelNumber() << ")(" << context.getRegisterName(addrReg) << ")" << std::endl;
     context.freeUpRegister(addrReg);
 }
 
 
-void Constant::Print(std::ostream &stream) const {
+void IntConstant::Print(std::ostream &stream) const {
+    stream << value_;
+}
+
+void FloatConstant::Print(std::ostream &stream) const {
     stream << value_;
 }

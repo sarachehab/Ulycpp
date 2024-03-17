@@ -17,6 +17,7 @@
 struct Variable;
 struct Scope;
 struct Function;
+union FloatIntUnion;
 
 enum class Specifier;
 
@@ -74,7 +75,7 @@ private:
     std::stack<std::string> end_labels;     // for break
     std::stack<Function> functions;         // for return statemetns
 
-    std::vector<unsigned int> floats_representation;
+    std::vector<std::string> floats_representation;
 
 public:
 
@@ -131,7 +132,7 @@ public:
     std::string getFunctionEndLabel() const;
 
     // defining float immediates
-    void defineFloat(double number);
+    void defineFloat(float number);
     unsigned int getFloatLabelNumber() const;
     void printFloatImmediates(std::ostream& stream) const;
 
@@ -189,6 +190,11 @@ struct Function {
     Function (std::string end_label_)
         : end_label(end_label_)
     {}
+};
+
+union FloatIntUnion {
+    float f;
+    uint32_t i;
 };
 
 #endif
