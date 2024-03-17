@@ -61,8 +61,8 @@ translation_unit
 	;
 
 external_declaration
-	: function_definition 	{ $$ = $1; }
-	| declaration			{ $$ = $1; }
+	: function_definition 	{ $$ = new InternalFunction($1); }
+	| declaration			{ $$ = new ExternalDeclaration($1); }
 	;
 
 function_definition

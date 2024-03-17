@@ -20,6 +20,7 @@
 #include "Functions/ast_parameter.hpp"
 #include "Functions/ast_function_call.hpp"
 #include "Functions/ast_argument.hpp"
+#include "Functions/ast_function_declaration.hpp"
 
 #include "Operations/ast_binary_operation.hpp"
 #include "Operations/ast_unary_operation.hpp"
