@@ -5,13 +5,13 @@
 class TypeSpecifier : public Node
 {
 private:
-    std::string type_;
+    Specifier type_;
 
 public:
-    TypeSpecifier(std::string type) : type_(type){};
+    TypeSpecifier(Specifier type) : type_(type){};
     ~TypeSpecifier(){};
 
-    Specifier getType() const override;
+    Specifier getType(Context& context) const override;
     void EmitRISC(std::ostream &stream,  int destReg, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };

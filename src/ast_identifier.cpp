@@ -4,12 +4,17 @@ std::string Identifier::getIdentifier() const {
     return identifier_;
 };
 
+Specifier Identifier::getType(Context &context) const {
+    Variable variable_specs = context.getVariableSpecs(identifier_);
+    return variable_specs.type;
+}
 
-int Identifier::fetchVariable(std::ostream &stream, Context &context) const {
+int Identifier::fetchVariable(Context &context) const {
     Variable variable_specs = context.getVariableSpecs(identifier_);
 
     if (variable_specs.reg == -1) {
-        int allocated_register = context.allocateRegister(stream);
+        Specifier type = variable_specs.type;
+        int allocated_register = context.allocateRegister(type);
         variable_specs.reg = allocated_register;
     }
 
@@ -32,10 +37,13 @@ void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &co
 
     Variable variable_specs = context.getVariableSpecs(identifier_);
 
+    // choose adequate load instruction
+    std::string load_instruction;
+
     // TODO: Load from register file if variable already there
-    stream << "lw " << context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
+    stream << context.getLoadInstruction(variable_specs.type) << " " << 
+        context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
     variable_specs.reg = destReg; 
 
     context.updateVariableSpecs(identifier_, variable_specs);
 }
-

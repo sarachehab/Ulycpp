@@ -8,7 +8,7 @@ void Loop::EmitRISC(std::ostream &stream, int destReg, Context& context) const {
     context.pushLabels(start_label, end_label);
 
     // assigning register for condition checking
-    int conditionReg = context.allocateRegister(stream);
+    int conditionReg = context.allocateRegister(Specifier::_int);
 
     // defining new scope for loop
     context.enterScope(context.getCurrentScopeSize());
@@ -84,7 +84,7 @@ void ForLoop::EmitLoop(std::ostream &stream, int destReg, int conditionReg, Cont
 
     std::string start_label = context.createLabel("for_condition_check");
     
-    int incrementReg = context.allocateRegister(stream);
+    int incrementReg = context.allocateRegister(Specifier::_int); // todo: verify
 
     initializer_->EmitRISC(stream, incrementReg, context);
     stream << start_label << ":" << std::endl;

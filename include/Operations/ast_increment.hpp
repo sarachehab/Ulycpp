@@ -18,6 +18,7 @@ public:
         delete value_;
     }
 
+    Specifier getType(Context& context) const override;
     virtual void EmitRISC(std::ostream &stream, int destReg, Context& context) const override = 0;
     virtual void Print(std::ostream &stream) const override = 0;
 };

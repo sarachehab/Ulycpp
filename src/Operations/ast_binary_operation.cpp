@@ -1,12 +1,20 @@
 #include "../../include/Operations/ast_binary_operation.hpp"
 
+Specifier BinaryOperation::getType(Context& context) const { std::cerr << "get lo+1 type" << std::endl; return left_->getType(context); }
+
 void BinaryOperation::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int leftReg = context.allocateRegister(stream);
+    
+    Specifier type = context.getLastOperationType();
+
+    int leftReg = context.allocateRegister(type);
     left_->EmitRISC(stream, leftReg, context);
-    int rightReg = context.allocateRegister(stream);
+
+    int rightReg = context.allocateRegister(type);
     right_->EmitRISC(stream, rightReg, context);
-    stream << getInstruction() << context.getRegisterName(destReg) << ", "
+
+    stream << getInstruction(type) << " " << context.getRegisterName(destReg) << ", "
         << context.getRegisterName(leftReg) << ", " << context.getRegisterName(rightReg) << std::endl;
+
     context.freeUpRegister(leftReg);
     context.freeUpRegister(rightReg);
 }

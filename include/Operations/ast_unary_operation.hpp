@@ -19,7 +19,9 @@ public:
     }
 
     virtual std::string getOperation() const = 0;
-    virtual std::string getInstruction() const = 0;
+    virtual std::string getInstruction(Specifier type) const = 0;
+
+    Specifier getType(Context& context) const override;
 
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
     void Print(std::ostream &stream) const override;

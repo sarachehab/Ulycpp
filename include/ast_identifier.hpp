@@ -14,7 +14,8 @@ public:
     ~Identifier(){};
 
     std::string getIdentifier() const override;
-    virtual int fetchVariable(std::ostream &stream, Context &context) const override;
+    Specifier getType(Context& context) const override;
+    virtual int fetchVariable(Context &context) const override;
 
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     void Print(std::ostream &stream) const override;

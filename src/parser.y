@@ -72,7 +72,9 @@ declaration_specifiers
 	;
 
 type_specifier
-	: INT { $$ = new TypeSpecifier("int"); }
+	: INT 		{ $$ = new TypeSpecifier(Specifier::_int); }
+	| FLOAT		{ $$ = new TypeSpecifier(Specifier::_float); }
+	| DOUBLE	{ $$ = new TypeSpecifier(Specifier::_double); }
 	;
 
 init_declarator_list
@@ -154,6 +156,7 @@ jump_statement
 
 primary_expression
 	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
+	| FLOAT_CONSTANT		{ std::cerr << "declaring immediate float " << std::endl; $$ = new FloatConstant($1); }
 	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
@@ -281,8 +284,8 @@ iteration_statement
 	;
 
 labeled_statement
-	: CASE constant_expression ':' statement	{ /*std::cerr << "case defined" << std::endl; $$ = new Case($2, $4);*/ }
-	| DEFAULT ':' statement						{ /*std::cerr << "default defined" << std::endl; $$ = new Default($3);*/ }
+	: CASE constant_expression ':' statement	{ /*$$ = new Case($2, $4);*/ }
+	| DEFAULT ':' statement						{ /*$$ = new Default($3);*/ }
 	;
 
 %%

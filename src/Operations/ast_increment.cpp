@@ -1,8 +1,16 @@
 #include "../../include/Operations/ast_increment.hpp"
 
+Specifier Increment::getType(Context& context) const { return Specifier::_int; }
+
 
 void LeftIncrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int srcReg = value_->fetchVariable(stream, context);
+
+    // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+
+    int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
     value_->EmitRISC(stream, srcReg, context);
@@ -24,7 +32,13 @@ void LeftIncrement::Print(std::ostream &stream) const {
 
 
 void LeftDecrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int srcReg = value_->fetchVariable(stream, context);
+
+    // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+
+    int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
     value_->EmitRISC(stream, srcReg, context);
@@ -45,13 +59,19 @@ void LeftDecrement::Print(std::ostream &stream) const {
 
 
 void RightIncrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int srcReg = value_->fetchVariable(stream, context);
+    
+     // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+
+    int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
     value_->EmitRISC(stream, srcReg, context);
 
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(srcReg) << std::endl;
-    stream <<"addi " << context.getRegisterName(srcReg) << ", "
+    stream << "addi " << context.getRegisterName(srcReg) << ", "
         << context.getRegisterName(srcReg) << ", 1" << std::endl;
     stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
 
@@ -67,7 +87,13 @@ void RightIncrement::Print(std::ostream &stream) const {
 
 
 void RightDecrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int srcReg = value_->fetchVariable(stream, context);
+
+    // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+    
+    int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
     value_->EmitRISC(stream, srcReg, context);
