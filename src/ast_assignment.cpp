@@ -5,9 +5,13 @@ std::string Assignment::getIdentifier() const {
 }
 
 void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    int srcReg = target_variable_->fetchVariable(stream, context);
+    int srcReg = target_variable_->fetchVariable(context);
+    
+    Specifier type = target_variable_->getType(context);
+    context.setOperationType(type);
+
     value_to_assign_->EmitRISC(stream, srcReg, context);
-    stream << "sw " << context.getRegisterName(srcReg) << ", " << context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(s0)" << std::endl;
+    stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", " << context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(s0)" << std::endl;
 
     // housekeeping, spill computed value to memory
     Variable variable_specs = context.getVariableSpecs(target_variable_->getIdentifier());

@@ -2,12 +2,9 @@
 
 void ReturnStatement::EmitRISC(std::ostream &stream, int destReg, Context &context) const
 {
-    std::cerr << "COMPILER: In return with expr" << std::endl;
-    if (expression_ != nullptr)
-    {
-        // TODO: if return statement
-        // TODO: if function call inside of function call + val saved: int x = getNum(y);
-        std::cerr << "COMPILER: Printing return with expr" << std::endl;
+    context.setOperationType(context.getReturnType());
+    
+    if (expression_ != nullptr) {
         expression_->EmitRISC(stream, destReg, context);
     }
 

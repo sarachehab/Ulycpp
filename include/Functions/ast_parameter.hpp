@@ -10,6 +10,7 @@ public:
     using Declaration::Declaration;
     ~Parameter() {}
 
+    Specifier getType (Context& context) const;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };

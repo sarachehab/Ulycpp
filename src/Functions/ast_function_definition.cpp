@@ -3,16 +3,18 @@
 void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     // TODO: these are just examples ones, make sure you understand the concept of directives and correct them.
     // Emit assembler directives.
+
+    std::string function_identifier = declarator_->getIdentifier();
+
     stream << ".text" << std::endl;
-    stream << ".globl " << declarator_->getIdentifier() << std::endl;
+    stream << ".globl " << function_identifier << std::endl;
 
-    int stack_size = 1024; // todo: review this
+    Specifier return_type = declaration_specifier_->getType(context);
+    context.enterFunction(function_identifier, return_type);
 
-    context.enterFunction();
+    stream << function_identifier << ":" << std::endl;
 
-    stream << declarator_->getIdentifier() << ":" << std::endl;
-
-    // header of the function
+    int stack_size = 1024; // todo: review this, count number of declarations
     stream << "addi sp, sp, " << -stack_size << std::endl;
     stream << "sw ra, " << stack_size - 4 << "(sp)" << std::endl;
     stream << "sw s0, " << stack_size - 8 << "(sp)" << std::endl;
@@ -27,13 +29,26 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
 
     declarator_->EmitRISC(stream, destReg, context);
 
+    int flowReg, returnReg;
+    switch (return_type){
+        case Specifier::_int:
+            flowReg = 15;
+            returnReg = 10;
+            break;
+        case Specifier::_float:
+        case Specifier::_double:
+            flowReg = 47;
+            returnReg = 42;
+            break;
+        default: throw std::runtime_error("Type not recognised in FunctionDefintion");
+    }
+
     if (compound_statement_ != nullptr){
         // todo: potentially fix this, saving automatically into register a0
-        compound_statement_->EmitRISC(stream, 15, context);
+        compound_statement_->EmitRISC(stream, flowReg, context);
     }
 
     stream << context.getFunctionEndLabel() << ":" << std::endl;
-    context.exitFunction();
 
     // footer of the function
     stream << "lw ra, " << stack_size - 4 << "(sp)" << std::endl;
@@ -46,13 +61,15 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     stream << "lw t5, " << stack_size - 32 << "(sp)" << std::endl;
     stream << "lw t6, " << stack_size - 36 << "(sp)" << std::endl;
     stream << "addi sp, sp, " << stack_size << std::endl;
-    stream << "mv " << context.getRegisterName(10) << ", " << context.getRegisterName(15) << std::endl;
+    stream << context.getMoveInstruction(return_type) << " " << context.getRegisterName(returnReg) << ", " << context.getRegisterName(flowReg) << std::endl;
     stream << "ret" << std::endl;
+
+    context.exitFunction();
 
 }
 
 void FunctionDefinition::Print(std::ostream &stream) const {
-    declaration_specifiers_->Print(stream);
+    declaration_specifier_->Print(stream);
     stream << " ";
 
     declarator_->Print(stream);

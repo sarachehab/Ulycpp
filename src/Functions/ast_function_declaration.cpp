@@ -1,6 +1,8 @@
 #include "../../include/Functions/ast_function_declaration.hpp"
 
-void ExternalDeclaration::EmitRISC(std::ostream& stream, int destReg, Context& context) const {}
+void ExternalDeclaration::EmitRISC(std::ostream& stream, int destReg, Context& context) const {
+    context.declareExternalFunction(declaration_->getIdentifier(), declaration_->getType(context));
+}
 
 void ExternalDeclaration::Print(std::ostream& stream) const {
     declaration_->Print(stream);

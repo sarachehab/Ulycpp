@@ -22,6 +22,9 @@ public:
         delete init_declarator_list_;
     }
 
+    Specifier getType(Context& context) const override;
+    std::string getIdentifier() const override;
+
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
 };

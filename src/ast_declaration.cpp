@@ -1,10 +1,19 @@
 #include "ast_declaration.hpp"
 #include "ast_assignment.hpp"
 
+Specifier Declaration::getType(Context& context) const {
+    return declaration_specifier_->getType(context);
+}
+
+std::string Declaration::getIdentifier() const {
+    auto desired_declaration = init_declarator_list_->getNodes();
+    return desired_declaration[0]->getIdentifier();
+}
+
 
 void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
 
-    Specifier type = declaration_specifier_->getType();
+    Specifier type = declaration_specifier_->getType(context);
     int memory_cells_allocated = SpecifierSize[type];
 
     for (auto declaration : init_declarator_list_->getNodes()) {
@@ -18,7 +27,7 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
         if (assignment_ == nullptr){
             context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, -1);
         } else {
-            int srcReg = context.allocateRegister(stream);
+            int srcReg = context.allocateRegister(type);
             context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, srcReg);
             declaration->EmitRISC(stream, destReg, context);
         }

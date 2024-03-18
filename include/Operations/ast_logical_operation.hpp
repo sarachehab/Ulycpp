@@ -12,7 +12,9 @@ public:
     ~LogicalOperation(){}
 
     virtual std::string getOperation() const override = 0;
-    virtual std::string getInstruction() const override = 0;
+    virtual std::string getInstruction(Specifier type) const override = 0;
+
+    Specifier getType(Context& context) const override;
 
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
     void Print(std::ostream &stream) const override;
@@ -24,7 +26,7 @@ public:
     using UnaryOperation::UnaryOperation;
     ~Negate(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -33,7 +35,7 @@ public:
     using LogicalOperation::LogicalOperation;
     ~LogicalAnd(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -42,7 +44,7 @@ public:
     using LogicalOperation::LogicalOperation;
     ~LogicalOr(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 

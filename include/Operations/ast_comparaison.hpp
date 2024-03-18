@@ -6,39 +6,48 @@
 
 
 class Comparaison : public BinaryOperation {
-
 public:
     using BinaryOperation::BinaryOperation;
     ~Comparaison(){}
 
     virtual std::string getOperation() const override = 0;
-    virtual std::string getInstruction() const override = 0;
+    virtual std::string getInstruction(Specifier type) const override = 0;
+
+    Specifier getType(Context& context) const override;
 
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
-    void Print(std::ostream &stream) const override;
+};
+
+class EqualCheck : public Comparaison {
+public:
+    using Comparaison::Comparaison;
+    ~EqualCheck(){}
+
+    virtual std::string getOperation() const override = 0;
+    virtual std::string getInstruction(Specifier type) const override = 0;
+
+    void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
 };
 
 
-class CompositeComparaison : public BinaryOperation {
-
+class CompositeComparaison : public Comparaison {
 public:
-    using BinaryOperation::BinaryOperation;
+    using Comparaison::Comparaison;
     ~CompositeComparaison(){}
 
     virtual std::string getOperation() const override = 0;
-    virtual std::string getInstruction() const override = 0;
+    virtual std::string getInstruction(Specifier type) const override = 0;
 
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
-    void Print(std::ostream &stream) const override;
 };
 
 
-class LessThan : public BinaryOperation {
+class LessThan : public Comparaison {
 public:
-    using BinaryOperation::BinaryOperation;
+    using Comparaison::Comparaison;
     ~LessThan(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -47,16 +56,16 @@ public:
     using CompositeComparaison::CompositeComparaison;
     ~LessThanEqual(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
-class GreaterThan : public BinaryOperation {
+class GreaterThan : public Comparaison {
 public:
-    using BinaryOperation::BinaryOperation;
+    using Comparaison::Comparaison;
     ~GreaterThan(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
@@ -65,25 +74,25 @@ public:
     using CompositeComparaison::CompositeComparaison;
     ~GreaterThanEqual(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
-class Equal : public Comparaison {
+class Equal : public EqualCheck {
 public:
-    using Comparaison::Comparaison;
+    using EqualCheck::EqualCheck;
     ~Equal(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 
-class NotEqual : public Comparaison {
+class NotEqual : public EqualCheck {
 public:
-    using Comparaison::Comparaison;
+    using EqualCheck::EqualCheck;
     ~NotEqual(){}
     std::string getOperation() const override;
-    std::string getInstruction() const override;
+    std::string getInstruction(Specifier type) const override;
 };
 
 #endif

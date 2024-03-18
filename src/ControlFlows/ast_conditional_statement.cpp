@@ -6,7 +6,7 @@ void IfStatement::EmitRISC(std::ostream &stream, int destReg, Context& context) 
     std::string exit_label = context.createLabel("exit_conditional_statement");
 
     // evaluate condition
-    int conditionReg = context.allocateRegister(stream);
+    int conditionReg = context.allocateRegister(Specifier::_int);
     condition_->EmitRISC(stream, conditionReg, context);
     stream << "beqz " << context.getRegisterName(conditionReg) << ", " << exit_label << std::endl;
     context.freeUpRegister(conditionReg);
@@ -37,7 +37,7 @@ void IfElseStatement::EmitRISC(std::ostream &stream, int destReg, Context& conte
     std::string exit_label = context.createLabel("exit_conditional_statement");
 
     // evaluate condition
-    int conditionReg = context.allocateRegister(stream);
+    int conditionReg = context.allocateRegister(Specifier::_int);
     condition_->EmitRISC(stream, conditionReg, context);
     stream << "beqz " << context.getRegisterName(conditionReg) << ", " << else_label << std::endl;
     context.freeUpRegister(conditionReg);
