@@ -162,7 +162,7 @@ std::string Context::getEndLabel() const {
 
 void Context::enterFunction() { // TODO: Review
     // define new scope
-    enterScope(8); // to save ra and s0
+    enterScope(36); // to save ra and s0 and all tmp registers
 
     // define end_label for returns
     std::string function_end_label = createLabel("function_end");
