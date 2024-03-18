@@ -76,6 +76,9 @@ private:
     std::stack<Function> functions;         // for return statemetns
 
     std::vector<std::string> floats_representation;
+    std::vector<std::string> doubles_representation;
+
+    Specifier last_operation_type;
 
 public:
 
@@ -125,19 +128,25 @@ public:
 
 
     // define function
-    void enterFunction();
+    void enterFunction(Specifier type);
     void exitFunction();
+    Specifier getReturnType();
 
     // get end label of function for return
     std::string getFunctionEndLabel() const;
 
     // defining float immediates
     void defineFloat(float number);
+    void defineDouble(double number);
     unsigned int getFloatLabelNumber() const;
-    void printFloatImmediates(std::ostream& stream) const;
+    unsigned int getDoubleLabelNumber() const;
+    void printImmediates(std::ostream& stream) const;
 
     std::string getStoreInstruction(Specifier type) const;
     std::string getLoadInstruction(Specifier type) const;
+
+    void setOperationType(Specifier type);
+    Specifier getLastOperationType() const;
 };
 
 enum class Specifier {
@@ -185,16 +194,26 @@ struct Scope {
 
 struct Function {
     std::string end_label;
+    Specifier return_type;
     // TODO: add return type
 
-    Function (std::string end_label_)
+    Function (std::string end_label_, Specifier return_type_)
         : end_label(end_label_)
+        , return_type(return_type_)
     {}
 };
 
 union FloatIntUnion {
     float f;
     uint32_t i;
+};
+
+union DoubleIntUnion {
+    double d;
+    struct {
+        uint32_t lower; // Assuming little-endian
+        uint32_t upper;
+    } parts;
 };
 
 #endif

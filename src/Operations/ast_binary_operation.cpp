@@ -1,10 +1,10 @@
 #include "../../include/Operations/ast_binary_operation.hpp"
 
-Specifier BinaryOperation::getType(Context& context) const { return left_->getType(context); }
+Specifier BinaryOperation::getType(Context& context) const { std::cerr << "get lo+1 type" << std::endl; return left_->getType(context); }
 
 void BinaryOperation::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     
-    Specifier type = getType(context);
+    Specifier type = context.getLastOperationType();
 
     int leftReg = context.allocateRegister(type);
     left_->EmitRISC(stream, leftReg, context);

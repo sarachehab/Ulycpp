@@ -2,10 +2,9 @@
 
 void ReturnStatement::EmitRISC(std::ostream &stream, int destReg, Context &context) const
 {
-    if (expression_ != nullptr)
-    {
-        // TODO: if return statement
-        // TODO: if function call inside of function call + val saved: int x = getNum(y);
+    context.setOperationType(context.getReturnType());
+    
+    if (expression_ != nullptr) {
         expression_->EmitRISC(stream, destReg, context);
     }
 

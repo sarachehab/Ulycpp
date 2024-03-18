@@ -156,7 +156,7 @@ jump_statement
 
 primary_expression
 	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
-	| FLOAT_CONSTANT		{ std::cerr << "declaring immediate float " << std::endl; $$ = new FloatConstant(float($1)); }
+	| FLOAT_CONSTANT		{ std::cerr << "declaring immediate float " << std::endl; $$ = new FloatConstant($1); }
 	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;

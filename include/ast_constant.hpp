@@ -31,10 +31,10 @@ public:
 
 class FloatConstant : public Constant {
 private:
-    float value_;
+    double value_;
 
 public:
-    FloatConstant(float value) 
+    FloatConstant(double value) 
         : value_(value)
     {}
     ~FloatConstant(){}

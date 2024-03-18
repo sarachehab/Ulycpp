@@ -2,10 +2,29 @@
 
 Specifier Comparaison::getType(Context& context) const { return Specifier::_int; }
 
-
 void Comparaison::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     
     Specifier op_type = left_->getType(context);
+    context.setOperationType(op_type);
+
+    int leftReg = context.allocateRegister(op_type);
+    left_->EmitRISC(stream, leftReg, context);
+
+    int rightReg = context.allocateRegister(op_type);
+    right_->EmitRISC(stream, rightReg, context);
+
+    stream << getInstruction(op_type) << " " << context.getRegisterName(destReg) << ", "
+        << context.getRegisterName(leftReg) << ", " << context.getRegisterName(rightReg) << std::endl;
+    
+    context.freeUpRegister(leftReg);
+    context.freeUpRegister(rightReg);
+}
+
+
+void EqualCheck::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+    
+    Specifier op_type = left_->getType(context);
+    context.setOperationType(op_type);
 
     int leftReg = context.allocateRegister(op_type);
     left_->EmitRISC(stream, leftReg, context);
@@ -18,14 +37,6 @@ void Comparaison::EmitRISC(std::ostream &stream, int destReg, Context &context) 
     
     context.freeUpRegister(leftReg);
     context.freeUpRegister(rightReg);
-}
-
-void Comparaison::Print(std::ostream &stream) const {
-    stream << "(";
-    left_->Print(stream);
-    stream << getOperation();
-    right_->Print(stream);
-    stream << ")";
 }
 
 
@@ -48,14 +59,6 @@ void CompositeComparaison::EmitRISC(std::ostream &stream, int destReg, Context &
 
     context.freeUpRegister(leftReg);
     context.freeUpRegister(rightReg);
-}
-
-void CompositeComparaison::Print(std::ostream &stream) const {
-    stream << "(";
-    left_->Print(stream);
-    stream << getOperation();
-    right_->Print(stream);
-    stream << ")";
 }
 
 

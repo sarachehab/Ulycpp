@@ -30,7 +30,7 @@ int Context::allocateRegister(Specifier type){
         case Specifier::_double:
             start_reg_file = 32;
             break;
-        default: throw std::runtime_error("unrecognised type in allocateRegister");
+        default: std::cerr << "unrecognised type in allocateRegister" << std::endl;
     }
 
     // find unused temporary register
@@ -162,13 +162,13 @@ std::string Context::getEndLabel() const {
 }
 
 
-void Context::enterFunction() { // TODO: Review
+void Context::enterFunction(Specifier type) { // TODO: Review
     // define new scope
     enterScope(0);
 
     // define end_label for returns
     std::string function_end_label = createLabel("function_end");
-    Function new_function = Function(function_end_label);
+    Function new_function = Function(function_end_label, type);
     functions.push(new_function);
 }
 
@@ -178,6 +178,11 @@ void Context::exitFunction() {
 
     // pop function from stack
     functions.pop();
+}
+
+Specifier Context::getReturnType() {
+    Function current_function = functions.top();
+    return current_function.return_type;
 }
 
 
@@ -198,14 +203,37 @@ void Context::defineFloat(float number) {
     floats_representation.push_back(numberStr);
 }
 
+void Context::defineDouble(double number) {
+    DoubleIntUnion u;
+    u.d = number;
+
+    uint32_t int_lower = u.parts.lower;    // Access as unsigned int
+    std::string str_lower = std::to_string(int_lower);
+    doubles_representation.push_back(str_lower);
+
+    uint32_t int_upper = u.parts.upper;
+    std::string str_upper = std::to_string(int_upper);
+    doubles_representation.push_back(str_upper);
+
+}
+
 unsigned int Context::getFloatLabelNumber() const {
     return floats_representation.size() - 1;
 }
 
-void Context::printFloatImmediates(std::ostream& stream) const {
+unsigned int Context::getDoubleLabelNumber() const {
+    return doubles_representation.size()/2 - 1;
+}
+
+void Context::printImmediates(std::ostream& stream) const {
     for (long unsigned int index = 0; index < floats_representation.size(); index++){
-        stream << ".LC" << index << ":" << std::endl;
+        stream << ".LF" << index << ":" << std::endl;
         stream << "\t .word " << floats_representation[index] << std::endl;
+    }
+    for (long unsigned int index = 0; index < doubles_representation.size(); index+=2){
+        stream << ".LD" << index/2 << ":" << std::endl;
+        stream << "\t .word " << doubles_representation[index] << std::endl;
+        stream << "\t .word " << doubles_representation[index+1] << std::endl;
     }
 }
 
@@ -231,4 +259,13 @@ std::string Context::getLoadInstruction(Specifier type) const {
             return "fld";
         default: throw std::runtime_error("type not recognised in assignement emitrisc");
     }
+}
+
+
+void Context::setOperationType(Specifier type) {
+    last_operation_type = type;
+}
+
+Specifier Context::getLastOperationType() const {
+    return last_operation_type;
 }

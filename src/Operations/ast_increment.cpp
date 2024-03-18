@@ -4,6 +4,12 @@ Specifier Increment::getType(Context& context) const { return Specifier::_int; }
 
 
 void LeftIncrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+
+    // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+
     int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
@@ -26,6 +32,12 @@ void LeftIncrement::Print(std::ostream &stream) const {
 
 
 void LeftDecrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+
+    // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+
     int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
@@ -47,6 +59,12 @@ void LeftDecrement::Print(std::ostream &stream) const {
 
 
 void RightIncrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+    
+     // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+
     int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 
@@ -69,6 +87,12 @@ void RightIncrement::Print(std::ostream &stream) const {
 
 
 void RightDecrement::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
+
+    // solve edgecase
+    if (destReg >= 32){
+        destReg = 0;
+    }
+    
     int srcReg = value_->fetchVariable(context);
     Variable variable_specs = context.getVariableSpecs(value_->getIdentifier());
 

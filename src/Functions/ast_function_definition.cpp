@@ -3,15 +3,17 @@
 void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     // TODO: these are just examples ones, make sure you understand the concept of directives and correct them.
     // Emit assembler directives.
+
     stream << ".text" << std::endl;
     stream << ".globl " << declarator_->getIdentifier() << std::endl;
 
-    context.enterFunction();
+    Specifier return_type = declaration_specifier_->getType(context);
+    context.enterFunction(return_type);
 
     declarator_->EmitRISC(stream, destReg, context);
 
     int returnReg;
-    switch (declaration_specifier_->getType(context)){
+    switch (return_type){
         case Specifier::_int:
             returnReg = 10;
             break;

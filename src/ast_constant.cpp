@@ -11,11 +11,29 @@ Specifier FloatConstant::getType(Context& context) const { return Specifier::_fl
 
 void FloatConstant::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
 
-    context.defineFloat(value_);
+    Specifier type = context.getLastOperationType();
+    std::string label;
+    int label_number;
+
+    switch(type) {
+        case Specifier::_double:
+            context.defineDouble(value_);
+            label = "LD";
+            label_number = context.getDoubleLabelNumber();
+            break;
+        case Specifier::_float:
+            context.defineFloat(float(value_));
+            label = "LF";
+            label_number = context.getFloatLabelNumber();
+            break;
+        default: throw std::runtime_error("Undefined Type in FloatConstant");
+    }
+
+    
 
     int addrReg = context.allocateRegister(Specifier::_int);
-    stream << "lui " << context.getRegisterName(addrReg) << ", %hi(.LC" << context.getFloatLabelNumber() << ")" << std::endl; // todo: change value
-    stream << "flw " << context.getRegisterName(destReg) << ", %lo(.LC" << context.getFloatLabelNumber() << ")(" << context.getRegisterName(addrReg) << ")" << std::endl;
+    stream << "lui " << context.getRegisterName(addrReg) << ", %hi(." << label << label_number << ")" << std::endl; // todo: change value
+    stream << context.getLoadInstruction(type) << " " << context.getRegisterName(destReg) << ", %lo(." << label << label_number << ")(" << context.getRegisterName(addrReg) << ")" << std::endl;
     context.freeUpRegister(addrReg);
 }
 
