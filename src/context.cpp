@@ -3,9 +3,10 @@
 
 int label_count = 0;
 
-void Context::useRegister(int i){
+void Context::useRegister(int i, Specifier type){
     std::cerr << "Using register " << i << std::endl;
     used_registers[i] = 1;
+    registers_type[i] = type;
 }
 
 void Context::freeUpRegister(int i){
@@ -36,7 +37,7 @@ int Context::allocateRegister(Specifier type){
     // find unused temporary register
     for (int i = start_reg_file; i < start_reg_file+32; i++){
         if (!used_registers[i]){
-            useRegister(i);
+            useRegister(i, type);
             return i;
         }
     }
@@ -50,11 +51,11 @@ int Context::allocateRegister(Specifier type){
         Variable variable_specs = it->second;
         int reg = variable_specs.reg;
 
-            if (reg != -1){
+            if (reg != -1 && reg >= start_reg_file && reg < start_reg_file + 32){
                 freeUpRegister(reg);
                 std::runtime_error("Missing code in allocateRegister, check ast_context");
                 variable_specs.reg = -1; // variable spilled into memory, no longer in register file
-                useRegister(reg);
+                useRegister(reg, type);
                 return reg;
             }
         }
@@ -63,8 +64,12 @@ int Context::allocateRegister(Specifier type){
 
 }
 
-std::string Context::getRegisterName(int i){
+std::string Context::getRegisterName(int i) const {
     return registers_name[i];
+}
+
+Specifier Context::getRegisterType(int i) const {
+    return registers_type[i];
 }
 
 
@@ -130,7 +135,6 @@ int Context::increaseCurrentStackSize(int memory_cells_allocated) {
     return scopes.back().current_scope_size;
 }
 
-
 std::string Context::createLabel(std::string name) const {
     return "_" + name + "_" + std::to_string(label_count++);
 }
@@ -175,7 +179,7 @@ std::string Context::getEndLabel() const {
 
 void Context::enterFunction(std::string function_name, Specifier type) { // TODO: Review
     // define new scope
-    enterScope(36); // to save ra and s0 and all tmp registers
+    enterScope(8); // to save ra and s0 and all tmp registers
     current_return_type = type;
 
     // define end_label for returns
