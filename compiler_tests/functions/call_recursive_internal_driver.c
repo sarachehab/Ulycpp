@@ -2,6 +2,7 @@
 int f(int n);
 
 int main()
-{
-    return !(f(5)==15);
+{   
+    printf("Function returns %d", f(4));
+    return !(f(4)==10);
 }

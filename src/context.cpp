@@ -42,7 +42,7 @@ int Context::allocateRegister(Specifier type){
     }
 
     // if all registers are used up, free up a register dating from oldest scope and use it
-    for (auto stack : scopes) {
+    for (auto stack : scopes) { //scopes is vector of Scope (<string, Variable> variable_bindings, int current_scope_size_)
         auto scope_variable_bindings = stack.variable_bindings;
 
         for (auto it = scope_variable_bindings.begin(); it != scope_variable_bindings.end(); it++){
@@ -113,6 +113,17 @@ void Context::updateVariableSpecs(std::string name, Variable variable_specs){
     scopes[scope_index].variable_bindings[name] = variable_specs;
 }
 
+void Context::FlushRegisters() {
+    for (Scope& scope : scopes) {
+        for (auto& varPair : scope.variable_bindings) {
+            if (varPair.second.reg != -1){
+                freeUpRegister(varPair.second.reg);
+                varPair.second.reg = -1;
+            }
+        }
+    }
+}
+
 
 int Context::increaseCurrentStackSize(int memory_cells_allocated) {
     scopes.back().current_scope_size += memory_cells_allocated;
@@ -162,36 +173,41 @@ std::string Context::getEndLabel() const {
 }
 
 
-void Context::enterFunction(Specifier type) { // TODO: Review
+void Context::enterFunction(std::string function_name, Specifier type) { // TODO: Review
     // define new scope
-    enterScope(0);
+    enterScope(36); // to save ra and s0 and all tmp registers
+    current_return_type = type;
 
     // define end_label for returns
-    std::string function_end_label = createLabel("function_end");
-    Function new_function = Function(function_end_label, type);
-    functions.push(new_function);
+    current_function_end_label = createLabel("function_end");
+
+    Function new_function = Function(type);
+    functions[function_name] = new_function;
 }
 
 void Context::exitFunction() {
     // exit scope
     exitScope();
-
-    // pop function from stack
-    functions.pop();
 }
 
-Specifier Context::getReturnType() {
-    Function current_function = functions.top();
-    return current_function.return_type;
+Specifier Context::getReturnType() const {
+    return current_return_type;
+}
+
+
+Specifier Context::getReturnType(std::string function_name) const {
+    auto function_specs = functions.at(function_name);
+    return function_specs.return_type;
+}
+
+void Context::declareExternalFunction(std::string function_name, Specifier return_type) {
+    Function defined_function = Function(return_type);
+    functions[function_name] = defined_function;
 }
 
 
 std::string Context::getFunctionEndLabel() const {
-    if (functions.size() == 0) {
-        throw std::runtime_error("No end labels to be attributed to function, check context.cpp");
-    }
-
-    return functions.top().end_label;
+    return current_function_end_label;
 }
 
 
@@ -257,6 +273,18 @@ std::string Context::getLoadInstruction(Specifier type) const {
             return "flw";
         case Specifier::_double:
             return "fld";
+        default: throw std::runtime_error("type not recognised in assignement emitrisc");
+    }
+}
+
+std::string Context::getMoveInstruction(Specifier type) const {
+    switch (type) {
+        case Specifier::_int:
+            return "mv";
+        case Specifier::_float:
+            return "fmv.s";
+        case Specifier::_double:
+            return "fmv.d";
         default: throw std::runtime_error("type not recognised in assignement emitrisc");
     }
 }

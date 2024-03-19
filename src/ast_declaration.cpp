@@ -1,6 +1,15 @@
 #include "ast_declaration.hpp"
 #include "ast_assignment.hpp"
 
+Specifier Declaration::getType(Context& context) const {
+    return declaration_specifier_->getType(context);
+}
+
+std::string Declaration::getIdentifier() const {
+    auto desired_declaration = init_declarator_list_->getNodes();
+    return desired_declaration[0]->getIdentifier();
+}
+
 
 void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
 

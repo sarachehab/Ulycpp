@@ -18,7 +18,7 @@ void LeftIncrement::EmitRISC(std::ostream &stream, int destReg, Context &context
     stream <<"addi " << context.getRegisterName(srcReg) << ", "
         << context.getRegisterName(srcReg) << ", 1" << std::endl;
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(srcReg) << std::endl;
-    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
+    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
 
     context.freeUpRegister(srcReg);
 }
@@ -45,7 +45,7 @@ void LeftDecrement::EmitRISC(std::ostream &stream, int destReg, Context &context
     stream <<"addi " << context.getRegisterName(srcReg) << ", "
         << context.getRegisterName(srcReg) << ", -1" << std::endl;
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(srcReg) << std::endl;
-    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
+    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
 
     context.freeUpRegister(srcReg);
 }
@@ -73,7 +73,7 @@ void RightIncrement::EmitRISC(std::ostream &stream, int destReg, Context &contex
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(srcReg) << std::endl;
     stream << "addi " << context.getRegisterName(srcReg) << ", "
         << context.getRegisterName(srcReg) << ", 1" << std::endl;
-    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
+    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
 
     context.freeUpRegister(srcReg);
 }
@@ -101,7 +101,7 @@ void RightDecrement::EmitRISC(std::ostream &stream, int destReg, Context &contex
     stream << "mv " << context.getRegisterName(destReg) << ", " << context.getRegisterName(srcReg) << std::endl;
     stream << "addi " << context.getRegisterName(srcReg) << ", "
         << context.getRegisterName(srcReg) << ", -1" << std::endl;
-    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
+    stream << "sw " << context.getRegisterName(srcReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
 
     context.freeUpRegister(srcReg);
 }

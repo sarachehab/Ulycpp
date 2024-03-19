@@ -41,8 +41,7 @@ void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &co
     std::string load_instruction;
 
     // TODO: Load from register file if variable already there
-    stream << context.getLoadInstruction(variable_specs.type) << " " << 
-        context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(sp)" << std::endl;
+    stream << context.getLoadInstruction(variable_specs.type) << " " << context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
     variable_specs.reg = destReg; 
 
     context.updateVariableSpecs(identifier_, variable_specs);

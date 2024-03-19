@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <map>
 #include <stack>
-#include <cstring> // For std::memcpy
+#include <cstring>
 
 
 // An object of class Context is passed between AST nodes during compilation.
@@ -73,7 +73,10 @@ private:
 
     std::stack<std::string> start_labels;   // for continue
     std::stack<std::string> end_labels;     // for break
-    std::stack<Function> functions;         // for return statemetns
+    
+    std::map<std::string, Function> functions;         // for return statemetns
+    Specifier current_return_type;
+    std::string current_function_end_label;
 
     std::vector<std::string> floats_representation;
     std::vector<std::string> doubles_representation;
@@ -105,7 +108,6 @@ public:
     // find variable in bindings
     int findVariableScope(std::string name) const ;
 
-
     // get variable specs
     Variable getVariableSpecs(std::string name) const ;
 
@@ -114,6 +116,9 @@ public:
 
     // modifiy stack size when allocating memory
     int increaseCurrentStackSize(int memory_cells_allocated);
+
+    // flush register file
+    void FlushRegisters();
 
     // create label for jumps
     std::string createLabel(std::string name) const;
@@ -128,9 +133,11 @@ public:
 
 
     // define function
-    void enterFunction(Specifier type);
+    void enterFunction(std::string function_name, Specifier type);
     void exitFunction();
-    Specifier getReturnType();
+    void declareExternalFunction(std::string function_name, Specifier return_type);
+    Specifier getReturnType(std::string function_name) const ;
+    Specifier getReturnType() const ;
 
     // get end label of function for return
     std::string getFunctionEndLabel() const;
@@ -144,6 +151,7 @@ public:
 
     std::string getStoreInstruction(Specifier type) const;
     std::string getLoadInstruction(Specifier type) const;
+    std::string getMoveInstruction(Specifier type) const;
 
     void setOperationType(Specifier type);
     Specifier getLastOperationType() const;
@@ -193,13 +201,13 @@ struct Scope {
 
 
 struct Function {
-    std::string end_label;
     Specifier return_type;
     // TODO: add return type
 
-    Function (std::string end_label_, Specifier return_type_)
-        : end_label(end_label_)
-        , return_type(return_type_)
+    Function(){}
+
+    Function (Specifier return_type_)
+        : return_type(return_type_)
     {}
 };
 
