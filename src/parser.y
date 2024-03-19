@@ -94,9 +94,11 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER 								{ $$ = new Identifier($1); }
-	| direct_declarator '(' ')' 				{ $$ = new FunctionDeclarator($1); }
-	| direct_declarator '(' parameter_list ')'	{ $$ = new FunctionDeclarator($1, $3); }
+	: IDENTIFIER 									{ $$ = new Identifier($1); }
+	| direct_declarator '[' constant_expression ']' { $$ = new ArrayDeclaration($1, $3); }
+	| direct_declarator '[' ']' 					{ $$ = new ArrayDeclaration($1); }
+	| direct_declarator '(' ')' 					{ $$ = new FunctionDeclarator($1); }
+	| direct_declarator '(' parameter_list ')'		{ $$ = new FunctionDeclarator($1, $3); }
 	;
 
 
@@ -111,7 +113,14 @@ parameter_declaration
 
 
 initializer
-	: assignment_expression { $$ = $1; }
+	: assignment_expression 		{ $$ = $1; }
+	| '{' initializer_list '}' 		{/*here*/}
+	| '{' initializer_list ',' '}' 	{/*here*/}
+	;
+
+initializer_list
+	: initializer						{/*here*/}
+	| initializer_list ',' initializer 	{/* here */ }
 	;
 
 statement
@@ -165,7 +174,8 @@ primary_expression
 
 postfix_expression
 	: primary_expression										{ $$ = $1; }
-	| postfix_expression '(' ')' 								{ std::cerr << "PARSER: function called here" << std::endl; $$ = new FunctionCall($1); }
+	| postfix_expression '[' expression ']' 					{/*here*/}
+	| postfix_expression '(' ')' 								{ $$ = new FunctionCall($1); }
 	| postfix_expression '(' argument_expression_list ')'		{ $$ = new FunctionCall($1, $3); }
 	| postfix_expression INC_OP									{ $$ = new RightIncrement($1); }
 	| postfix_expression DEC_OP									{ $$ = new RightDecrement($1); }

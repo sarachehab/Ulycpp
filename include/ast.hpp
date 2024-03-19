@@ -37,6 +37,10 @@
 #include "ControlFlows/ast_loop.hpp"
 #include "ControlFlows/ast_transfer_control.hpp"
 
+#include "Arrays/ast_array_declaration.hpp"
+#include "Arrays/ast_array_index.hpp"
+#include "Arrays/ast_array_initializer.hpp"
+
 #include "ast_compound_statement.hpp"
 
 extern Node *ParseAST(std::string file_name);
