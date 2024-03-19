@@ -19,7 +19,11 @@ struct Scope;
 struct Function;
 union FloatIntUnion;
 
-enum class Specifier;
+enum class Specifier {
+    _int,
+    _float,
+    _double,
+};
 
 typedef std::map<std::string, Variable> VariableBindings;
 
@@ -66,8 +70,10 @@ private:
         "fa0", "fa1",
         "fa2", "fa3", "fa4", "fa5", "fa6", "fa7",
         "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11",
-        "ft3", "ft4", "ft5", "ft6",
+        "ft8", "ft9", "ft10", "ft11"
     };
+
+    std::vector<Specifier> registers_type;
 
     std::vector<Scope> scopes;
 
@@ -86,12 +92,21 @@ private:
 public:
 
     ~ Context(){}
-    Context() = default; // Default constructor
+    Context() {      // Default constructor
 
-    void useRegister(int i);
+        for (int i = 0; i < 32; i++){
+            registers_type.push_back(Specifier::_int);
+        }
+        for (int i = 0; i < 32; i++){
+            registers_type.push_back(Specifier::_float);
+        }
+    }
+
+    void useRegister(int i, Specifier type);
     void freeUpRegister(int i);
     int allocateRegister(Specifier type);
-    std::string getRegisterName(int i);
+    std::string getRegisterName(int i) const;
+    Specifier getRegisterType(int i) const;
 
 
     // function to enter scope
@@ -155,12 +170,6 @@ public:
 
     void setOperationType(Specifier type);
     Specifier getLastOperationType() const;
-};
-
-enum class Specifier {
-    _int,
-    _float,
-    _double,
 };
 
 
