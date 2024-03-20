@@ -153,21 +153,22 @@ expression_statement
 
 jump_statement
 	: RETURN ';' 			{ $$ = new ReturnStatement(nullptr); }
-	| RETURN expression ';' { std::cerr << "PARSER: defined return with expr" << std::endl; $$ = new ReturnStatement($2); }
+	| RETURN expression ';' { $$ = new ReturnStatement($2); }
 	| CONTINUE ';'			{ $$ = new ContinueStatement(); }
 	| BREAK ';'				{ $$ = new BreakStatement(); }
 	;
 
 primary_expression
 	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
-	| FLOAT_CONSTANT		{ std::cerr << "declaring immediate float " << std::endl; $$ = new FloatConstant($1); }
+	| FLOAT_CONSTANT		{ $$ = new FloatConstant($1); }
 	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
+	| STRING_LITERAL		{ $$ = new Character($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 
 postfix_expression
 	: primary_expression										{ $$ = $1; }
-	| postfix_expression '(' ')' 								{ std::cerr << "PARSER: function called here" << std::endl; $$ = new FunctionCall($1); }
+	| postfix_expression '(' ')' 								{ $$ = new FunctionCall($1); }
 	| postfix_expression '(' argument_expression_list ')'		{ $$ = new FunctionCall($1, $3); }
 	| postfix_expression INC_OP									{ $$ = new RightIncrement($1); }
 	| postfix_expression DEC_OP									{ $$ = new RightDecrement($1); }

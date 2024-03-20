@@ -40,6 +40,7 @@
 #include "ControlFlows/ast_transfer_control.hpp"
 
 #include "ast_compound_statement.hpp"
+#include "ast_char.hpp"
 
 extern Node *ParseAST(std::string file_name);
 
