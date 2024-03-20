@@ -1,0 +1,515 @@
+[33mcommit 8200b962a39b0cadae69bcef72d330910981c37d[m[33m ([m[1;36mHEAD -> [m[1;32mfloat[m[33m)[m
+Merge: 4800484 cd87944
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Mon Mar 18 12:13:43 2024 +0000
+
+    Fixing merge issues with FLOATS
+
+[33mcommit 4800484d830add06730c46b52fde35baa36a84d0[m[33m ([m[1;31morigin/functions[m[33m, [m[1;32mfunctions[m[33m)[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Mon Mar 18 12:07:35 2024 +0000
+
+    functions passing
+
+[33mcommit cd879441346d47525e7a577a36782d6206cfbfc0[m[33m ([m[1;31morigin/float[m[33m)[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Mon Mar 18 00:22:40 2024 +0000
+
+    Implementing doubles
+
+[33mcommit f84b601ee6432354be58fcce9fe8c0caab37e5c1[m
+Merge: 4df4e4d a05ca55
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sun Mar 17 16:09:18 2024 +0000
+
+    Merge branch 'functions' of https://github.com/LangProc/langproc-2023-cw-Uly_Cpp into functions
+
+[33mcommit 4df4e4d488b7fab54fdccd997b3cc8018ae71bb7[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sun Mar 17 16:08:51 2024 +0000
+
+    added print and test
+
+[33mcommit a05ca55cf57d32dae8e184821046cfef3b90b276[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 17 15:57:12 2024 +0000
+
+    Implementing external declarations of functions
+
+[33mcommit ef2bdcfe2698b12f63a710a8563f7379074f7b96[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 17 15:08:37 2024 +0000
+
+    Passing simple internal calls
+
+[33mcommit b6048a5f36395512a20d8a4aba876c4692f77a33[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 17 13:36:43 2024 +0000
+
+    Declaring immediate floats
+    
+    TODO:
+    - Implement immediates doubles
+    - Fix issue related with increment
+
+[33mcommit 7195cf06adfc12e19e917a84a6e1d685f8dcafdd[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sun Mar 17 13:33:00 2024 +0000
+
+    trial 2
+
+[33mcommit 6de67cc405268740c0a2dad0560fbfd97a442227[m
+Merge: b30e4ef 7ab944e
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sun Mar 17 13:08:42 2024 +0000
+
+    Merge branch 'functions' of https://github.com/LangProc/langproc-2023-cw-Uly_Cpp into functions
+
+[33mcommit b30e4ef709757380def62cbb8740f5de51905d7a[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sun Mar 17 13:07:31 2024 +0000
+
+    to test on wsl
+
+[33mcommit 7ab944ef4441dc19a219274d8a07b0a51979fdaa[m
+Author: noamweitz <117317998+noamweitz@users.noreply.github.com>
+Date:   Sun Mar 17 11:24:06 2024 +0000
+
+    Delete test.py
+
+[33mcommit 7a27366f0eb09cb6d015efb19ec46eb0d1aa9c0d[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 17 02:16:49 2024 +0000
+
+    First try at implementing doubles and floats
+    - implemented binary operations
+    Passing 41/84
+    
+    TODO:
+    - fix issue related to declaration of constants
+    - implement comparaisons with doubles
+    - write custom tests to have extensive testing
+
+[33mcommit 7a252423db140ab1fc62a5253ab105beb7a85be4[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sat Mar 16 22:04:57 2024 +0000
+
+    now works
+
+[33mcommit a2db61f2a727448ff3a723f25d7f0872d2135555[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Sat Mar 16 21:37:19 2024 +0000
+
+    still doesnt work
+
+[33mcommit 955eb4de045608dffa4e7895ddb5f3cfb9624cfb[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Fri Mar 15 16:54:21 2024 +0000
+
+    header
+
+[33mcommit 918e30491469b5fa43117ae88e76054c1268b322[m[33m ([m[1;32mmain[m[33m)[m
+Author: Sara Chehab <89109466+sarachehab@users.noreply.github.com>
+Date:   Fri Mar 15 00:08:58 2024 +0000
+
+    Implementing Control Flow
+    
+    implemented Scopes
+    implemented If
+    implemented if-else
+    implemented in-line conditionals
+    implemented while loop
+    implemented for loop
+    implemented continue statements
+    implemented break statements
+    fixed issues related to register allocation
+    ---------
+    Co-authored-by: noamweitz <weitzmanoam@gmail.com>
+
+[33mcommit 5eaef130c7bd09409f4d8c505ef4b37bd48473fa[m
+Merge: 7cc0e2b f582aa2
+Author: noamweitz <117317998+noamweitz@users.noreply.github.com>
+Date:   Mon Mar 4 20:42:18 2024 +0000
+
+    Merge pull request #3 from LangProc/int
+    
+    Implementing Declaration, Assignments, Initializations. Passing integers tests
+
+[33mcommit f582aa28c3f6c1de78f8278d10c71224c92fcc9a[m[33m ([m[1;31morigin/int[m[33m)[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Mon Mar 4 20:39:59 2024 +0000
+
+    all test cases pass for integers, implemented all functions
+
+[33mcommit 86a072179b6e94e3061286a55c8b4aecffd46d53[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Mon Mar 4 18:08:12 2024 +0000
+
+    Adding operation/assign through parser
+
+[33mcommit 021614082caf828b540e095c9d5c4cbe743a96c0[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Mon Mar 4 17:47:04 2024 +0000
+
+    Added error message for more than parameters
+
+[33mcommit 6bb39a8e769325cb199c72fb595e47f9ee0a96eb[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Mon Mar 4 17:22:27 2024 +0000
+
+    Implemented parameter declaration
+
+[33mcommit 3b0de7871153b6ff6f7a70f0963d8c7d7e3877d3[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Mon Mar 4 00:10:04 2024 +0000
+
+    Implemented Initialisation of variables
+    Tested variables, and ensured they're updated throughout the code
+
+[33mcommit a5e980f6f8f0d8aba1dce083e3fc1dfe98245c05[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 3 22:43:59 2024 +0000
+
+    Tidying up repository
+
+[33mcommit 918bddd777af327b2324bc9bb3c5a0b3a4738051[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 3 17:03:13 2024 +0000
+
+    Implemented inline multiple assignements
+
+[33mcommit f57794fa55b4d17b1fca860400c1a5de8344a9fa[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sun Mar 3 11:53:44 2024 +0000
+
+    Implemented Assignements and Declarations
+    - passing 13 tests
+    
+    NEXT STEPS: Implement Initialiser
+
+[33mcommit 2a944c2e38b6a1e13a1b6b72ba1faa26ac7412ff[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Thu Feb 29 04:11:49 2024 +0000
+
+    First try at implementing assignements
+    TODO: Figure out a way to bypass the virtual functions defined in nodes + test
+
+[33mcommit f093be8949e03c763adccc3638749e3e8c0e41e6[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Thu Feb 29 02:49:48 2024 +0000
+
+    First attempt at implementing declarations
+    TODO: Test
+
+[33mcommit 96b511cff5d8ef1e36b96a5801b25ba9b5a3f01d[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Wed Feb 28 11:17:12 2024 +0000
+
+    added slt sgt and others
+
+[33mcommit cd37687d23a571bc7efc413bab6c4fbde11242c5[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Wed Feb 28 00:27:23 2024 +0000
+
+    Implemented UnaryOperations
+    - modified RightShift from logical to arithmetic
+
+[33mcommit 556cd83c0026b7de1fb33f04139e3d4a9895a532[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Tue Feb 27 20:10:08 2024 +0000
+
+    Implemented remaining ArithmeticOperations on integers
+    - Refactored Addition and Substraction to mitigate redundancies
+    - Added tests
+    
+    TODO:
+    - Implement unary operations
+    - Implement operations on variables
+
+[33mcommit 5a91feae35298884dd4f56e5873e4f9fa04014f6[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Tue Feb 27 17:45:54 2024 +0000
+
+    added ADD SUB OR and AND
+
+[33mcommit 1113c25a22dae31c4809ba830877bc9a028d23e0[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Tue Feb 27 13:50:59 2024 +0000
+
+    testing2.0
+
+[33mcommit 91f4d07b7181cec127870c1bccd2b6fff6a6d462[m
+Author: noamweitz <weitzmanoam@gmail.com>
+Date:   Tue Feb 27 13:47:38 2024 +0000
+
+    testing
+
+[33mcommit 66b381f99d75f28e7d5c2b9152acae5a043fd9f3[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Tue Feb 27 02:11:51 2024 +0000
+
+    Modified EmitRISC functions to admit more general case and chose destReg
+    - modified ast_constant.cpp to associate constant with destReg instead of hardcoded a0
+    
+    TESTED: passing _example
+
+[33mcommit 55de620f8af8a4943598b54ca7f624143472b9af[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Tue Feb 27 02:08:41 2024 +0000
+
+    Modified context to support basic operations within one function call
+    - added register file
+    - added necessary ressources to allocate registers as necessary
+    - added necessary ressources to define variables in memory and within the register file
+
+[33mcommit 7ef36f9fdb3ceb5934725e2d675c0c9a991dfab6[m
+Merge: 05cff61 7cc0e2b
+Author: noamweitz <117317998+noamweitz@users.noreply.github.com>
+Date:   Mon Feb 26 12:32:02 2024 +0000
+
+    Merge pull request #1 from LangProc/main
+    
+    Typo fixed
+
+[33mcommit 05cff61c1fcc19f79cfbd9ea74a583ecc191b001[m
+Author: Sara Chehab <89109466+sarachehab@users.noreply.github.com>
+Date:   Sat Feb 24 01:56:12 2024 +0000
+
+    Corrected minor typo
+
+[33mcommit d0bf8c53a306c7e731f578f842d8824fe99d12ad[m
+Author: sarachehab <s.edu@chehab.co>
+Date:   Sat Feb 24 00:42:59 2024 +0000
+
+    Added code for memory management within function:
+    - allocating temporary registers to intermediate representations
+    
+    TODO:
+    - test
+    - write code for overflowing of registers in memory
+
+[33mcommit 7cc0e2bdd1824f77b6d69ff79f5c6229a2b8ad70[m
+Author: Fiwo735 <fiwo735@gmail.com>
+Date:   Thu Feb 22 18:32:48 2024 +0000
+
+    Typo fixed
+
+[33mcommit 02d07f46011e62bfbc6e20740354821b256237f7[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 13:39:21 2024 +0000
+
+    Always build with coverage to simplify the test scripts
+
+[33mcommit 2c42dd896c8cd657f25b196e7ede2061c7207b9a[m
+Author: Sanjit Raman <51057192+SanjitRaman@users.noreply.github.com>
+Date:   Wed Feb 21 13:28:38 2024 +0000
+
+    Put build artifacts in build/ so as not to pollute src/ directory. (#19)
+    
+    * Put build artifacts in build/ so as not to pollute src/ directory.
+    
+    `make clean` becomes simpler, and update gitignore to ignore  `build` directory.
+    
+    * Create `build/` directory if doesn't exist already.
+    
+    * Delete entire build/ directory rather than contents only.
+
+[33mcommit 71b6a1bb435f14aca3942f06d9f85bf611743551[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 13:25:13 2024 +0000
+
+    test: Fix coverage in python script
+
+[33mcommit 383221c1300bfe6e098dd8889438031a074bd46c[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 04:40:55 2024 +0000
+
+    Updated changelog
+
+[33mcommit 53785c98c84fb7b3d83e25709413e48247b8da1b[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 04:33:02 2024 +0000
+
+    Missed merge in c_compiler.md
+
+[33mcommit 9ac9c72b25c91d99d54d68cca52992f4c4771515[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 04:28:53 2024 +0000
+
+    Updated console style in markdown
+
+[33mcommit 4d4515f9fec4d337096c084e42b992a67a7c7227[m
+Merge: 51e15ce 78bb9de
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 04:25:22 2024 +0000
+
+    Merge branch 'main' of https://github.com/LangProc/langproc-cw
+
+[33mcommit 51e15ce279ceadf8e1fa2d138a0712440806c641[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 04:23:55 2024 +0000
+
+    Fixing failed merge
+
+[33mcommit 78bb9de20866ab2e26687ccf2e5bca2596379395[m
+Merge: 44d3d11 d8ff689
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 05:09:45 2024 +0100
+
+    Merge pull request #18 from LangProc/further_test_improvements
+    
+    Further test improvements (2)
+
+[33mcommit d8ff6892c6efa171aa40d5254c6277c04e739e88[m[33m ([m[1;31morigin/further_test_improvements[m[33m)[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 04:01:51 2024 +0000
+
+    test: Resolve merge issues
+
+[33mcommit 165c200a4382fa1e9f94477d46dc5b3ff3e6bf02[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 03:59:14 2024 +0000
+
+    test: Import sys
+
+[33mcommit 19c198e7282426e53e8cb2f24a4ea01d4b6d2376[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 03:46:00 2024 +0000
+
+    Even more coloring
+
+[33mcommit ac708cb31b31762e2170fc892417f16031fd642b[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 03:39:58 2024 +0000
+
+    test: Add colouring to logs
+
+[33mcommit 8aa9080278d493e9015d6ddd0f66486ab5760de5[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 03:36:40 2024 +0000
+
+    Removed unnecessary newlines
+
+[33mcommit 6dda619b67b915ed6ebeaa502f8025137e029d81[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 03:18:53 2024 +0000
+
+    test: Review fixups
+
+[33mcommit 6dfe9366c6993c197ab55d079ac82d8cb61b7cec[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 03:17:11 2024 +0000
+
+    Tidying up + more docstrings
+
+[33mcommit 3208f2eb4a674e93055c6ad609d9a3a7e0f19dd4[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 01:50:02 2024 +0000
+
+    test: Remove colorama dependency
+    
+    If colours seem to cause an issue on user's systems then this can be reverted.
+
+[33mcommit ec968a3d7598e6c241d34b2b354d324e2cbf3503[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 01:44:55 2024 +0000
+
+    test: Large refactor to eliminate the multiple ways of counting passing and failing tests
+
+[33mcommit 8a30d1aac30d59df3487737b706e949e15bcb068[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 01:43:57 2024 +0000
+
+    test: Revert to the bash script if python is not installed
+
+[33mcommit 198936b78d848d9fc8a43cc07cc0d56d2a4f03cd[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 21 01:43:33 2024 +0000
+
+    git: Ignore pycache and gcda coverage files
+
+[33mcommit 44d3d11a81b02f9f96992ba430e3a5258ea855a6[m
+Merge: eed378d c8e842c
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 02:17:18 2024 +0100
+
+    Merge pull request #13 from LangProc/revert-9-further_test_improvements
+    
+    Revert "Further test improvements"
+
+[33mcommit c8e842cd0e955b0f25e887b2836ae98d80c4ee11[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 21 02:14:30 2024 +0100
+
+    Revert "Further test improvements"
+
+[33mcommit eed378d61eebcaefaa6ce206787e8905171840e9[m
+Merge: ed4f15d 4b7bbb0
+Author: Fiwo735 <fiwo735@gmail.com>
+Date:   Wed Feb 21 01:12:24 2024 +0000
+
+    Merge remote-tracking branch 'origin/further_test_improvements'
+
+[33mcommit 4b7bbb0efb52da10e3524332b9c2ef62e23af8a7[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 14 06:15:36 2024 +0000
+
+    Sanitized group names for test checking
+
+[33mcommit 68379ed187409112f01d820400fd4b04a5724176[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 14 05:56:26 2024 +0000
+
+    Added comments and Windows terminal fix for colorama
+
+[33mcommit d00e3f8abd4681dd0ba10b9eded662b376e8b4b3[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 14 05:47:06 2024 +0000
+
+    Added colorama install to .yml
+
+[33mcommit fffed3d90555efec4c064da203dfd1f72b6e94e9[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 14 05:45:28 2024 +0000
+
+    Rearranged colorama install to exploit docker caching
+
+[33mcommit 6cb1a03fcfd076b6a505e6a4c71721ecb1ce9df8[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 14 05:45:09 2024 +0000
+
+    Adjusted test.sh
+
+[33mcommit be3e19cf054a79cc761fb1831f15dde264abe4c7[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Wed Feb 14 05:31:47 2024 +0000
+
+    Made all code snippets consistent in docs
+
+[33mcommit ed4f15de5bd1885efe351cfaad62030aaa05207b[m
+Author: James Nock <jpnock@gmail.com>
+Date:   Wed Feb 14 01:24:14 2024 +0000
+
+    Add support for integrated VSCode debugging
+    
+    Closes #11
+
+[33mcommit 564cb8a62c5f5857ecf820dcaa762f457597f440[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Fri Feb 9 16:52:51 2024 +0000
+
+    Added exception handling for TTY progress bar error
+
+[33mcommit 157d91042dd39bbd346335cc7c3bebf5f809979f[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Fri Feb 9 16:45:06 2024 +0000
+
+    Added missing typing support and docs
+
+[33mcommit 502d10b34e3829c7bdaf6d534b7f1a9af53e0de4[m
+Author: Filip Wojcicki <50636446+Fiwo735@users.noreply.github.com>
+Date:   Fri Feb 9 16:33:49 2024 +0000
+
+    Changed ASAN_OPTIONS in env
+
+[33mcommit 4ad295f533914743952

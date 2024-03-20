@@ -76,7 +76,9 @@ declaration_specifiers
 type_specifier
 	: INT 		{ $$ = new TypeSpecifier(Specifier::_int); }
 	| FLOAT		{ $$ = new TypeSpecifier(Specifier::_float); }
-	| DOUBLE	{ $$ = new TypeSpecifier(Specifier::_double); }
+	| DOUBLE	{ $$ = new TypeSpecifier(Specifier::_double); }	
+	| UNSIGNED	{ $$ = new TypeSpecifier(Specifier::_unsigned); }
+	| CHAR		{ $$ = new TypeSpecifier(Specifier::_char); }
 	;
 
 init_declarator_list
@@ -184,6 +186,8 @@ unary_expression
 	| '~' cast_expression		{ $$ = new OneComplement($2); }
 	| INC_OP unary_expression	{ $$ = new LeftIncrement($2); }
 	| DEC_OP unary_expression	{ $$ = new LeftDecrement($2); }
+	| SIZEOF unary_expression	{ $$ = new SizeOf($2); }
+	| SIZEOF '(' type_name ')'	{ $$ = new SizeOf($3); }
 	;
 
 cast_expression
@@ -293,6 +297,15 @@ labeled_statement
 	: CASE constant_expression ':' statement	{ /*$$ = new Case($2, $4);*/ }
 	| DEFAULT ':' statement						{ /*$$ = new Default($3);*/ }
 	;
+
+type_name
+	: specifier_qualifier_list { $$ = $1; }
+	;
+
+specifier_qualifier_list
+	: type_specifier { $$ = $1; }
+	;
+
 
 %%
 

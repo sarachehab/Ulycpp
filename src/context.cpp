@@ -246,6 +246,7 @@ unsigned int Context::getDoubleLabelNumber() const {
 }
 
 void Context::printImmediates(std::ostream& stream) const {
+    std::cerr << floats_representation.size() << std::endl;
     for (long unsigned int index = 0; index < floats_representation.size(); index++){
         stream << ".LF" << index << ":" << std::endl;
         stream << "\t .word " << floats_representation[index] << std::endl;
@@ -261,6 +262,8 @@ std::string Context::getStoreInstruction(Specifier type) const {
     switch (type) {
         case Specifier::_int:
             return "sw";
+        case Specifier::_unsigned:
+            return "sw";
         case Specifier::_float:
             return "fsw";
         case Specifier::_double:
@@ -273,6 +276,8 @@ std::string Context::getLoadInstruction(Specifier type) const {
     switch (type) {
         case Specifier::_int:
             return "lw";
+        case Specifier::_unsigned:
+            return "lw";
         case Specifier::_float:
             return "flw";
         case Specifier::_double:
@@ -284,6 +289,8 @@ std::string Context::getLoadInstruction(Specifier type) const {
 std::string Context::getMoveInstruction(Specifier type) const {
     switch (type) {
         case Specifier::_int:
+            return "mv";
+        case Specifier::_unsigned:
             return "mv";
         case Specifier::_float:
             return "fmv.s";

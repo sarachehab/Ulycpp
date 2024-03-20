@@ -21,8 +21,10 @@ union FloatIntUnion;
 
 enum class Specifier {
     _int,
+    _unsigned,
     _float,
     _double,
+    _char,
 };
 
 typedef std::map<std::string, Variable> VariableBindings;
@@ -172,11 +174,12 @@ public:
     Specifier getLastOperationType() const;
 };
 
-
 inline std::unordered_map <Specifier, int> SpecifierSize {
     {Specifier::_int, 4},
+    {Specifier::_unsigned, 4},
     {Specifier::_float, 4},
     {Specifier::_double, 8},
+    {Specifier::_char, 1},
 };
 
 struct Variable {

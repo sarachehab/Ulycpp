@@ -33,6 +33,8 @@
 #include "ast_declaration.hpp"
 #include "ast_assignment.hpp"
 
+#include "ast_sizeof.hpp"
+
 #include "ControlFlows/ast_conditional_statement.hpp"
 #include "ControlFlows/ast_loop.hpp"
 #include "ControlFlows/ast_transfer_control.hpp"
