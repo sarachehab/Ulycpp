@@ -95,8 +95,8 @@ declarator
 
 direct_declarator
 	: IDENTIFIER 									{ $$ = new Identifier($1); }
-	| direct_declarator '[' constant_expression ']' { $$ = new ArrayDeclaration($1, $3); }
-	| direct_declarator '[' ']' 					{ $$ = new ArrayDeclaration($1); }
+	| direct_declarator '[' constant_expression ']' { $$ = new ArrayDeclarator($1, $3); }
+	| direct_declarator '[' ']' 					{ $$ = new ArrayDeclarator($1); }
 	| direct_declarator '(' ')' 					{ $$ = new FunctionDeclarator($1); }
 	| direct_declarator '(' parameter_list ')'		{ $$ = new FunctionDeclarator($1, $3); }
 	;
@@ -114,13 +114,13 @@ parameter_declaration
 
 initializer
 	: assignment_expression 		{ $$ = $1; }
-	| '{' initializer_list '}' 		{/*here*/}
-	| '{' initializer_list ',' '}' 	{/*here*/}
+	| '{' initializer_list '}' 		{ $$ = $$; }
+	| '{' initializer_list ',' '}' 	{ $$ = $$; }
 	;
 
 initializer_list
-	: initializer						{/*here*/}
-	| initializer_list ',' initializer 	{/* here */ }
+	: initializer						{ $$ = ArrayList($1); }
+	| initializer_list ',' initializer 	{ $1->PushBack($2); $$ = $1; }
 	;
 
 statement

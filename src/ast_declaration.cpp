@@ -18,18 +18,40 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
 
     for (auto declaration : init_declarator_list_->getNodes()) {
         std::string identifier = declaration->getIdentifier();
+        bool isArray = declaration->isArray();
+
+        int number_elements = 1;
+
+        if (isArray){
+            number_elements = declaration->getSize();
+
+            // if size not defined, assume size of array is size of initializer
+            if (number_elements == -1) {
+                number_elements = 1; // TODO: Fix this
+            }
+        }
 
         // adjust stack
-        int memory_offset = context.increaseCurrentStackSize(memory_cells_allocated);
-        // stream << "addi sp, sp, " << -memory_cells_allocated << std::endl;
+        int memory_offset = context.increaseCurrentStackSize(number_elements*memory_cells_allocated);
 
         Assignment* assignment_ = dynamic_cast<Assignment*>(declaration);
         if (assignment_ == nullptr){
-            context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, -1);
+            context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, -1);
         } else {
-            int srcReg = context.allocateRegister(type);
-            context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, srcReg);
-            declaration->EmitRISC(stream, destReg, context);
+            
+            if (isArray){
+                int init_list_size = assignment_->getSize();
+                for (int i = 0; i < init_list_size; i++){
+                    int srcReg = context.allocateRegister(type);
+                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset+i*memory_cells_allocated, type, srcReg);
+                    // TODO: complete
+                }
+            }
+            else {
+                int srcReg = context.allocateRegister(type);
+                context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, srcReg);
+                declaration->EmitRISC(stream, destReg, context);
+            }
         }
     }
 }

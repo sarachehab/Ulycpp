@@ -42,6 +42,7 @@
 #include "Arrays/ast_array_initializer.hpp"
 
 #include "ast_compound_statement.hpp"
+#include "ast_declarator.hpp"
 
 extern Node *ParseAST(std::string file_name);
 
