@@ -25,6 +25,8 @@ public:
     Specifier getType(Context& context) const override;
     std::string getIdentifier() const override;
 
+    ExternalDeclarationType getExternalType() const override;
+
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
 };

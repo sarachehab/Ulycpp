@@ -34,7 +34,6 @@ void Identifier::Print(std::ostream &stream) const {
 
 
 void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-
     Variable variable_specs = context.getVariableSpecs(identifier_);
 
     // choose adequate load instruction

@@ -114,13 +114,13 @@ parameter_declaration
 
 initializer
 	: assignment_expression 		{ $$ = $1; }
-	| '{' initializer_list '}' 		{ $$ = $$; }
-	| '{' initializer_list ',' '}' 	{ $$ = $$; }
+	| '{' initializer_list '}' 		{ $$ = $2; }
+	| '{' initializer_list ',' '}' 	{ $$ = $2; }
 	;
 
 initializer_list
-	: initializer						{ $$ = ArrayList($1); }
-	| initializer_list ',' initializer 	{ $1->PushBack($2); $$ = $1; }
+	: initializer						{ $$ = new ArrayList($1); }
+	| initializer_list ',' initializer 	{ $1->PushBack($3); $$ = $1; }
 	;
 
 statement
@@ -174,7 +174,8 @@ primary_expression
 
 postfix_expression
 	: primary_expression										{ $$ = $1; }
-	| postfix_expression '[' expression ']' 					{/*here*/}
+	| postfix_expression '[' expression ']' 					{ $$ = new ArrayIndex($1, $3); }
+	| postfix_expression '[' ']'								{/* $$ = new ArrayIndex($1); */}
 	| postfix_expression '(' ')' 								{ $$ = new FunctionCall($1); }
 	| postfix_expression '(' argument_expression_list ')'		{ $$ = new FunctionCall($1, $3); }
 	| postfix_expression INC_OP									{ $$ = new RightIncrement($1); }
@@ -188,7 +189,7 @@ argument_expression_list
 	;
 
 unary_expression
-	: postfix_expression
+	: postfix_expression		{ $$ = $1; }
 	| '+' cast_expression 		{ $$ = $2; }
 	| '-' cast_expression		{ $$ = new Negate($2); }
 	| '~' cast_expression		{ $$ = new OneComplement($2); }
@@ -197,7 +198,7 @@ unary_expression
 	;
 
 cast_expression
-	: unary_expression
+	: unary_expression			{ $$ = $1; }
 	;
 
 multiplicative_expression
@@ -283,7 +284,7 @@ expression
 	;
 
 constant_expression
-	: conditional_expression
+	: conditional_expression							{ $$ = $1; }
 	;
 
 selection_statement

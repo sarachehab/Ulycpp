@@ -11,6 +11,11 @@ void FunctionDeclarator::EmitRISC(std::ostream &stream, int destReg, Context &co
     }
 }
 
+ExternalDeclarationType FunctionDeclarator::getExternalType() const
+{
+    return ExternalDeclarationType::_functions;
+}
+
 void FunctionDeclarator::Print(std::ostream &stream) const
 {
     identifier_->Print(stream);

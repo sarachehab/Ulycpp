@@ -5,6 +5,11 @@ Specifier Declaration::getType(Context& context) const {
     return declaration_specifier_->getType(context);
 }
 
+ExternalDeclarationType Declaration::getExternalType() const {
+    auto desired_declaration = init_declarator_list_->getNodes();
+    return desired_declaration[0]->getExternalType();
+}
+
 std::string Declaration::getIdentifier() const {
     auto desired_declaration = init_declarator_list_->getNodes();
     return desired_declaration[0]->getIdentifier();

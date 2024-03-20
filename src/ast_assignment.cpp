@@ -8,10 +8,16 @@ void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) c
     int srcReg = target_variable_->fetchVariable(context);
     
     Specifier type = target_variable_->getType(context);
+    int memory_cells_allocated = SpecifierSize[type];
     context.setOperationType(type);
 
+    int i = target_variable_->getCurrentIndex();
+
     value_to_assign_->EmitRISC(stream, srcReg, context);
-    stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", " << context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(s0)" << std::endl;
+    stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", " << 
+        i * memory_cells_allocated + context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset 
+            << "(s0)" << std::endl;
+    // TODO: check previous line
 
     // housekeeping, spill computed value to memory
     Variable variable_specs = context.getVariableSpecs(target_variable_->getIdentifier());

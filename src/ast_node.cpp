@@ -15,6 +15,14 @@ std::vector<Node *> NodeList::getNodes() const {
     }
 
 
+ExternalDeclarationType Node::getExternalType() const {
+    return ExternalDeclarationType::_global;
+}
+
+int Node::getCurrentIndex() const {
+    return 0;
+}
+
 void NodeList::PushBack(Node *item){
     nodes_.push_back(item);
 }

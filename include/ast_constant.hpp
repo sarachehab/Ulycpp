@@ -24,7 +24,7 @@ public:
     {}
     ~IntConstant(){}
 
-    int getConstantValue() const;
+    int getValue() const;
 
     Specifier getType(Context &context) const override;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;

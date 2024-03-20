@@ -27,6 +27,8 @@ public:
     std::string getIdentifier() const override;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     void Print(std::ostream &stream) const override;
+
+    ExternalDeclarationType getExternalType() const override;
 };
 
 #endif

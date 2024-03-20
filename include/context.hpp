@@ -25,6 +25,11 @@ enum class Specifier {
     _double,
 };
 
+enum class ExternalDeclarationType{
+    _functions, 
+    _global,
+};
+
 typedef std::map<std::string, Variable> VariableBindings;
 
 class Context{

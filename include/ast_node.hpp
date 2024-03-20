@@ -34,6 +34,10 @@ public:
 
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
+
+    virtual ExternalDeclarationType getExternalType() const;
+
+    virtual int getCurrentIndex() const;
 };
 
 // Represents a list of nodes.
