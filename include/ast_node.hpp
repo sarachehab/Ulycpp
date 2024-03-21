@@ -23,6 +23,8 @@ public:
     virtual std::string getNodeType() const;
     virtual std::vector<Node *> getNodes() const;
 
+    virtual void EmitCondition(std::ostream &stream, int destReg, Context &context) const;
+
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
 };
@@ -44,6 +46,8 @@ public:
     std::string getNodeType() const override;
 
     std::vector<Node *> getNodes() const override;
+
+    virtual void EmitCondition(std::ostream &stream, int destReg, Context &context) const;
 
     void PushBack(Node *item) override;
     virtual void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;

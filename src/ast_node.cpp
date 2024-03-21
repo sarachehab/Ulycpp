@@ -65,3 +65,14 @@ void NodeList::Print(std::ostream &stream) const {
 std::string NodeList::getNodeType() const {
     return "NodeList";
 }
+
+void NodeList::EmitCondition(std::ostream &stream, int destReg, Context &context) const {
+    for (auto node : nodes_) {
+        if (node == nullptr){
+            continue;
+        }
+        node->EmitCondition(stream, destReg, context);
+    }
+}
+
+void Node::EmitCondition(std::ostream &stream, int destReg, Context &context) const {}

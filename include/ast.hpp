@@ -38,6 +38,7 @@
 #include "ControlFlows/ast_conditional_statement.hpp"
 #include "ControlFlows/ast_loop.hpp"
 #include "ControlFlows/ast_transfer_control.hpp"
+#include "ControlFlows/ast_switch.hpp"
 
 #include "ast_compound_statement.hpp"
 #include "ast_char.hpp"

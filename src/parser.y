@@ -284,7 +284,7 @@ constant_expression
 selection_statement
 	: IF '(' expression ')' statement					{ $$ = new IfStatement($3, $5); }
 	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStatement($3, $5, $7); }
-	| SWITCH '(' expression ')' statement				{ /*$$ = new Switch($3, $5);*/ }
+	| SWITCH '(' expression ')' statement				{ $$ = new Switch($3, $5); }
 	;
 
 iteration_statement
@@ -295,8 +295,8 @@ iteration_statement
 	;
 
 labeled_statement
-	: CASE constant_expression ':' statement	{ /*$$ = new Case($2, $4);*/ }
-	| DEFAULT ':' statement						{ /*$$ = new Default($3);*/ }
+	: CASE constant_expression ':' statement	{ $$ = new Case($2, $4); }
+	| DEFAULT ':' statement						{ $$ = new Default($3); }
 	;
 
 type_name
