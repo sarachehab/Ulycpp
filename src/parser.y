@@ -44,9 +44,9 @@
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
-%type <number_int> INT_CONSTANT STRING_LITERAL
+%type <number_int> INT_CONSTANT 
 %type <number_float> FLOAT_CONSTANT
-%type <string> IDENTIFIER
+%type <string> IDENTIFIER STRING_LITERAL
 
 
 %start ROOT
@@ -76,7 +76,9 @@ declaration_specifiers
 type_specifier
 	: INT 		{ $$ = new TypeSpecifier(Specifier::_int); }
 	| FLOAT		{ $$ = new TypeSpecifier(Specifier::_float); }
-	| DOUBLE	{ $$ = new TypeSpecifier(Specifier::_double); }
+	| DOUBLE	{ $$ = new TypeSpecifier(Specifier::_double); }	
+	| UNSIGNED	{ $$ = new TypeSpecifier(Specifier::_unsigned); }
+	| CHAR		{ $$ = new TypeSpecifier(Specifier::_char); }
 	;
 
 init_declarator_list
@@ -160,15 +162,16 @@ expression_statement
 
 jump_statement
 	: RETURN ';' 			{ $$ = new ReturnStatement(nullptr); }
-	| RETURN expression ';' { std::cerr << "PARSER: defined return with expr" << std::endl; $$ = new ReturnStatement($2); }
+	| RETURN expression ';' { $$ = new ReturnStatement($2); }
 	| CONTINUE ';'			{ $$ = new ContinueStatement(); }
 	| BREAK ';'				{ $$ = new BreakStatement(); }
 	;
 
 primary_expression
 	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
-	| FLOAT_CONSTANT		{ std::cerr << "declaring immediate float " << std::endl; $$ = new FloatConstant($1); }
+	| FLOAT_CONSTANT		{ $$ = new FloatConstant($1); }
 	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
+	| STRING_LITERAL		{ std::cerr << "defining string" << std::endl; $$ = new Character($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 
@@ -195,6 +198,8 @@ unary_expression
 	| '~' cast_expression		{ $$ = new OneComplement($2); }
 	| INC_OP unary_expression	{ $$ = new LeftIncrement($2); }
 	| DEC_OP unary_expression	{ $$ = new LeftDecrement($2); }
+	| SIZEOF unary_expression	{ $$ = new SizeOf($2); }
+	| SIZEOF '(' type_name ')'	{ $$ = new SizeOf($3); }
 	;
 
 cast_expression
@@ -290,7 +295,7 @@ constant_expression
 selection_statement
 	: IF '(' expression ')' statement					{ $$ = new IfStatement($3, $5); }
 	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStatement($3, $5, $7); }
-	| SWITCH '(' expression ')' statement				{ /*$$ = new Switch($3, $5);*/ }
+	| SWITCH '(' expression ')' statement				{ $$ = new Switch($3, $5); }
 	;
 
 iteration_statement
@@ -301,9 +306,18 @@ iteration_statement
 	;
 
 labeled_statement
-	: CASE constant_expression ':' statement	{ /*$$ = new Case($2, $4);*/ }
-	| DEFAULT ':' statement						{ /*$$ = new Default($3);*/ }
+	: CASE constant_expression ':' statement	{ $$ = new Case($2, $4); }
+	| DEFAULT ':' statement						{ $$ = new Default($3); }
 	;
+
+type_name
+	: specifier_qualifier_list { $$ = $1; }
+	;
+
+specifier_qualifier_list
+	: type_specifier { $$ = $1; }
+	;
+
 
 %%
 

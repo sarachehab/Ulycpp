@@ -62,6 +62,8 @@ void FunctionCall::EmitRISC(std::ostream &stream, int destReg, Context &context)
     int returnReg;
     switch(return_type){
         case Specifier::_int:
+        case Specifier::_unsigned:
+        case Specifier::_char:
             returnReg = 10;
             break;
         case Specifier::_double:

@@ -3,7 +3,7 @@
 Specifier LogicalOperation::getType(Context& context) const { return Specifier::_int; }
 
 void LogicalOperation::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
-    
+
     int leftReg = context.allocateRegister(Specifier::_int);
     left_->EmitRISC(stream, leftReg, context);
 
@@ -27,8 +27,20 @@ void LogicalOperation::Print(std::ostream &stream) const {
     stream << ")";
 }
 
+// std::string Negate::getInstruction(Specifier type) const { return "neg "; }
 
-std::string Negate::getInstruction(Specifier type) const { return "neg "; }
+std::string Negate::getInstruction(Specifier type) const { // Inherited from UnaryOperation
+    switch (type) {
+        case Specifier::_int:
+            return "neg ";
+        case Specifier::_float:
+            return "fneg.s ";
+        case Specifier::_double:
+            return "fneg.d ";
+    }
+    return "ERROR, check Negate";
+}
+
 std::string Negate::getOperation() const { return " - "; }
 
 std::string LogicalOr::getInstruction(Specifier type) const { return "or "; }

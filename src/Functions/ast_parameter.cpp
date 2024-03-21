@@ -33,6 +33,8 @@ void ParametersList::EmitRISC(std::ostream &stream, int destReg, Context &contex
         // choose argument register in function of type
         switch (parameter->getType(context)){
             case Specifier::_int:
+            case Specifier::_unsigned:
+            case Specifier::_char:
                 parameter->EmitRISC(stream, argRegInt++, context);
                 break;
             case Specifier::_float:
