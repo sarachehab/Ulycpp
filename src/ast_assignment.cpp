@@ -1,5 +1,5 @@
 #include "ast_assignment.hpp"
-#include "../include/arrays/ast_array_index.hpp"
+#include "../include/Arrays/ast_array_index.hpp"
 
 std::string Assignment::getIdentifier() const {
     return target_variable_->getIdentifier();
