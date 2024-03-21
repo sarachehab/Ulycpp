@@ -52,6 +52,8 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     stream << context.getMoveInstruction(return_type) << " " << context.getRegisterName(returnReg) << ", " << context.getRegisterName(flowReg) << std::endl;
     stream << "ret" << std::endl;
 
+    stream << ".section .rodata" << std::endl;
+
     context.exitFunction();
 
 }

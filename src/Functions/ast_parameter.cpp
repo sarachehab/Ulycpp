@@ -12,7 +12,7 @@ void Parameter::EmitRISC(std::ostream &stream, int destReg, Context &context) co
 
     std::string identifier = init_declarator_list_->getIdentifier();
 
-    context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, -1);
+    context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, VarScope::_local, ProgramVarType::_unique, -1);
     stream << context.getStoreInstruction(type) << " " << context.getRegisterName(destReg) << ", " << -memory_offset << "(s0)" << std::endl;
 
 }
@@ -53,7 +53,7 @@ void ParametersList::EmitRISC(std::ostream &stream, int destReg, Context &contex
 void ParametersList::Print(std::ostream& stream) const {
     for (auto parameter : nodes_){
         parameter->Print(stream);
-        stream << ", "; // todo: fix this, currenyly printing , for last parameter
+        stream << ", ";
     }
 }
 

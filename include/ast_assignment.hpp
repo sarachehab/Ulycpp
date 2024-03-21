@@ -18,7 +18,11 @@ public:
         delete value_to_assign_;
     }
 
+    int getSize() const override;
     std::string getIdentifier() const override;
+
+    Node* getValToAssign() const;
+    
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
 };

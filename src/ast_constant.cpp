@@ -7,6 +7,10 @@ void IntConstant::EmitRISC(std::ostream &stream, int destReg, Context &context) 
     stream << "li " << context.getRegisterName(destReg) << ", " << value_ << std::endl;
 }
 
+int IntConstant::getValue() const {
+    return value_;
+}
+
 Specifier FloatConstant::getType(Context& context) const { return Specifier::_float; } // todo: or double
 
 void FloatConstant::EmitRISC(std::ostream &stream, int destReg, Context &context) const {

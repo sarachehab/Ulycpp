@@ -96,9 +96,11 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER 								{ $$ = new Identifier($1); }
-	| direct_declarator '(' ')' 				{ $$ = new FunctionDeclarator($1); }
-	| direct_declarator '(' parameter_list ')'	{ $$ = new FunctionDeclarator($1, $3); }
+	: IDENTIFIER 									{ $$ = new Identifier($1); }
+	| direct_declarator '[' constant_expression ']' { $$ = new ArrayDeclarator($1, $3); }
+	| direct_declarator '[' ']' 					{ $$ = new ArrayDeclarator($1); }
+	| direct_declarator '(' ')' 					{ $$ = new FunctionDeclarator($1); }
+	| direct_declarator '(' parameter_list ')'		{ $$ = new FunctionDeclarator($1, $3); }
 	;
 
 
@@ -113,7 +115,14 @@ parameter_declaration
 
 
 initializer
-	: assignment_expression { $$ = $1; }
+	: assignment_expression 		{ $$ = $1; }
+	| '{' initializer_list '}' 		{ $$ = $2; }
+	| '{' initializer_list ',' '}' 	{ $$ = $2; }
+	;
+
+initializer_list
+	: initializer						{ $$ = new ArrayList($1); }
+	| initializer_list ',' initializer 	{ $1->PushBack($3); $$ = $1; }
 	;
 
 statement
@@ -168,6 +177,8 @@ primary_expression
 
 postfix_expression
 	: primary_expression										{ $$ = $1; }
+	| postfix_expression '[' expression ']' 					{ $$ = new ArrayIndex($1, $3); }
+	| postfix_expression '[' ']'								{/* $$ = new ArrayIndex($1); */}
 	| postfix_expression '(' ')' 								{ $$ = new FunctionCall($1); }
 	| postfix_expression '(' argument_expression_list ')'		{ $$ = new FunctionCall($1, $3); }
 	| postfix_expression INC_OP									{ $$ = new RightIncrement($1); }
@@ -181,7 +192,7 @@ argument_expression_list
 	;
 
 unary_expression
-	: postfix_expression
+	: postfix_expression		{ $$ = $1; }
 	| '+' cast_expression 		{ $$ = $2; }
 	| '-' cast_expression		{ $$ = new Negate($2); }
 	| '~' cast_expression		{ $$ = new OneComplement($2); }
@@ -192,7 +203,7 @@ unary_expression
 	;
 
 cast_expression
-	: unary_expression
+	: unary_expression			{ $$ = $1; }
 	;
 
 multiplicative_expression
@@ -278,7 +289,7 @@ expression
 	;
 
 constant_expression
-	: conditional_expression
+	: conditional_expression							{ $$ = $1; }
 	;
 
 selection_statement

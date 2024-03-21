@@ -27,6 +27,22 @@ enum class Specifier {
     _char,
 };
 
+enum class ProgramVarType {
+    _unique,
+    _pointer,
+    _array,
+};
+
+enum class VarScope {
+    _local,
+    _global,
+};
+
+enum class ExternalDeclarationType{
+    _functions, 
+    _global,
+};
+
 typedef std::map<std::string, Variable> VariableBindings;
 
 class Context{
@@ -102,6 +118,8 @@ public:
         for (int i = 0; i < 32; i++){
             registers_type.push_back(Specifier::_float);
         }
+
+        enterScope(0);
     }
 
     void useRegister(int i, Specifier type);
@@ -120,7 +138,7 @@ public:
     int getCurrentScopeSize();
 
     // function to add to bindings
-    void addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, int reg);
+    void addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, VarScope type_scope, ProgramVarType var_type, int reg);
 
     // find variable in bindings
     int findVariableScope(std::string name) const ;
@@ -182,16 +200,26 @@ inline std::unordered_map <Specifier, int> SpecifierSize {
     {Specifier::_char, 1},
 };
 
+inline std::unordered_map <Specifier, int> SpecifierAlign {
+    {Specifier::_int, 2},
+    {Specifier::_float, 2},
+    {Specifier::_double, 3},
+};
+
 struct Variable {
     Specifier type;
+    VarScope type_scope;
+    ProgramVarType var_type;
     int memory_cells_allocated;
     int sp_offset;
     int reg;
 
     Variable() = default; // Default constructor
 
-    Variable(Specifier _type, int _memory_cells_allocated, int _sp_offset, int _reg)
+    Variable(Specifier _type, VarScope _type_scope, ProgramVarType _var_type, int _memory_cells_allocated, int _sp_offset, int _reg)
         : type(_type)
+        , type_scope(_type_scope)
+        , var_type(_var_type)
         , memory_cells_allocated(_memory_cells_allocated)
         , sp_offset(_sp_offset)
         , reg(_reg)
