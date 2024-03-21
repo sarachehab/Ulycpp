@@ -26,6 +26,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     switch (return_type){
         case Specifier::_int:
         case Specifier::_unsigned:
+        case Specifier::_char:
             flowReg = 15;
             returnReg = 10;
             break;

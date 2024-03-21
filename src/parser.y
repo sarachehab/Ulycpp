@@ -44,9 +44,9 @@
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
-%type <number_int> INT_CONSTANT STRING_LITERAL
+%type <number_int> INT_CONSTANT 
 %type <number_float> FLOAT_CONSTANT
-%type <string> IDENTIFIER
+%type <string> IDENTIFIER STRING_LITERAL
 
 
 %start ROOT
@@ -162,7 +162,7 @@ primary_expression
 	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
 	| FLOAT_CONSTANT		{ $$ = new FloatConstant($1); }
 	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
-	| STRING_LITERAL		{ $$ = new Character($1); }
+	| STRING_LITERAL		{ std::cerr << "defining string" << std::endl; $$ = new Character($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 

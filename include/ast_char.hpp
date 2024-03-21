@@ -5,12 +5,13 @@
 
 class Character : public Node {
 private:
+    std::string name_;
     int value_;
 
 public:
-    Character(int value)
-        : value_(value)
-    {}
+    Character(std::string* name)
+        : name_(*name), value_(0)
+    { delete name; }
     ~Character(){}
 
     void EmitRISC(std::ostream& stream, int destReg, Context& context) const override;

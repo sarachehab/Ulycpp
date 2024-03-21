@@ -25,6 +25,7 @@ int Context::allocateRegister(Specifier type){
     int start_reg_file;
     switch(type){
         case Specifier::_int:
+        case Specifier::_char:
             start_reg_file = 0;
             break;
         case Specifier::_float:
