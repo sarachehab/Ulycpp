@@ -24,17 +24,28 @@ Specifier ArrayIndex::getType(Context &context) const {
 void ArrayIndex::computeIndex(std::ostream& stream, int tmpReg, Context& context) const {
     Variable variable_specs = context.getVariableSpecs(getIdentifier());
 
-    int memory_cells_allocated = SpecifierSize[variable_specs.type];
+    int reg, memory_cells_allocated = SpecifierSize[variable_specs.type];
 
     index_->EmitRISC(stream, tmpReg, context);
+    stream << "slli " <<  context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << SpecifierAlign[variable_specs.type] << std::endl; 
 
-    int sizeReg = context.allocateRegister(Specifier::_int);
-    stream << "li " << context.getRegisterName(sizeReg) << ", " << SpecifierSize[variable_specs.type] << std::endl;
-    stream << "mul " <<  context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(sizeReg) << std::endl; 
-    context.freeUpRegister(sizeReg);
+    switch (variable_specs.type_scope) {
 
-    stream << "add " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", s0" << std::endl;
-    stream << "addi " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << variable_specs.sp_offset << std::endl;
+        case VarScope::_local:
+            stream << "add " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", s0" << std::endl;
+            stream << "addi " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << variable_specs.sp_offset << std::endl;
+            break;
+        
+        case VarScope::_global:
+            reg = context.allocateRegister(Specifier::_int);
+            stream << "lui " << context.getRegisterName(reg) << ", %hi(" << getIdentifier() << ")" << std::endl;
+            stream << "addi " << context.getRegisterName(reg) << ", " << context.getRegisterName(reg) << ", %lo(" << getIdentifier() << ")" << std::endl;
+            stream << "add " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(reg) << std::endl;
+            context.freeUpRegister(reg);
+            break;
+    }
+
+    
 }
 
 void ArrayIndex::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
@@ -47,7 +58,7 @@ void ArrayIndex::EmitRISC(std::ostream &stream, int destReg, Context &context) c
     stream << context.getLoadInstruction(variable_specs.type) << " " << context.getRegisterName(destReg) 
         << ", 0(" << context.getRegisterName(tmpReg) << ")" << std::endl;
 
-    variable_specs.reg = destReg; 
+    variable_specs.reg = destReg;
     context.updateVariableSpecs(identifier_->getIdentifier(), variable_specs);
 
     context.freeUpRegister(tmpReg);

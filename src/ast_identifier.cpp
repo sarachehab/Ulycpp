@@ -35,13 +35,23 @@ void Identifier::Print(std::ostream &stream) const {
 
 void VariableIdentifier::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     Variable variable_specs = context.getVariableSpecs(identifier_);
+    int tmpReg;
 
-    // choose adequate load instruction
-    std::string load_instruction;
+    switch (variable_specs.type_scope) {
 
-    // TODO: Load from register file if variable already there
-    stream << context.getLoadInstruction(variable_specs.type) << " " << context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
-    variable_specs.reg = destReg; 
+        case VarScope::_local:
+            stream << context.getLoadInstruction(variable_specs.type) << " " 
+                << context.getRegisterName(destReg) << ", " << variable_specs.sp_offset << "(s0)" << std::endl;
+            variable_specs.reg = destReg; 
+            context.updateVariableSpecs(identifier_, variable_specs);
+            break;
 
-    context.updateVariableSpecs(identifier_, variable_specs);
+        case VarScope::_global:
+            tmpReg = context.allocateRegister(Specifier::_int);
+            stream << "lui " << context.getRegisterName(tmpReg) << ", " << "%hi(" << getIdentifier() << ")" << std::endl;
+            stream << context.getLoadInstruction(variable_specs.type) << " " << context.getRegisterName(destReg) 
+                << ", %lo(" << getIdentifier() << ")(" << context.getRegisterName(tmpReg) << ")" << std::endl;
+            context.freeUpRegister(tmpReg);
+            break;
+    }
 }

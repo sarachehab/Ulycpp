@@ -9,6 +9,10 @@ int Assignment::getSize() const {
     return target_variable_->getSize();
 }
 
+Node* Assignment::getValToAssign() const {
+    return value_to_assign_;
+}
+
 void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     int srcReg = target_variable_->fetchVariable(context);
     Variable target_specs = context.getVariableSpecs(getIdentifier());
@@ -26,19 +30,32 @@ void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) c
     switch(target_specs.var_type){
 
         case ProgramVarType::_unique:
-            stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", " << 
-                context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(s0)" << std::endl;
+
+            switch (target_specs.type_scope) {
+
+                case VarScope::_local:
+                    stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", " << 
+                        context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(s0)" << std::endl;
+                    break;
+
+                case VarScope::_global:
+                    tmpReg = context.allocateRegister(Specifier::_int);
+                    stream << "lui " << context.getRegisterName(tmpReg) << ", %hi(" << getIdentifier() << ")" << std::endl;
+                    stream << context.getStoreInstruction(type) << " " <<  context.getRegisterName(srcReg) 
+                        << ", %lo(" << getIdentifier() << ")(" << context.getRegisterName(tmpReg) << ")" << std::endl;
+                    context.freeUpRegister(tmpReg);
+                    break;
+            }
+           
             break;
 
         case ProgramVarType::_array:
             array_index_ = dynamic_cast<ArrayIndex* >(target_variable_);
-
             tmpReg = context.allocateRegister(Specifier::_int);
+            std::cerr << "assigned list" << std::endl;
             array_index_->computeIndex(stream, tmpReg, context);
-
             stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", 0(" 
-                << context.getRegisterName(tmpReg) << ")" << std::endl;
-
+                        << context.getRegisterName(tmpReg) << ")" << std::endl;
             context.freeUpRegister(tmpReg);
             break;
 

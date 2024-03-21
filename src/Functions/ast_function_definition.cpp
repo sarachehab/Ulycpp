@@ -18,13 +18,6 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     stream << "addi sp, sp, " << -stack_size << std::endl;
     stream << "sw ra, " << stack_size - 4 << "(sp)" << std::endl;
     stream << "sw s0, " << stack_size - 8 << "(sp)" << std::endl;
-    // stream << "sw t0, " << stack_size - 12 << "(sp)" << std::endl;
-    // stream << "sw t1, " << stack_size - 16 << "(sp)" << std::endl;
-    // stream << "sw t2, " << stack_size - 20 << "(sp)" << std::endl;
-    // stream << "sw t3, " << stack_size - 24 << "(sp)" << std::endl;
-    // stream << "sw t4, " << stack_size - 28 << "(sp)" << std::endl;
-    // stream << "sw t5, " << stack_size - 32 << "(sp)" << std::endl;
-    // stream << "sw t6, " << stack_size - 36 << "(sp)" << std::endl;
     stream << "addi s0, sp, " << stack_size << std::endl;
 
     declarator_->EmitRISC(stream, destReg, context);
@@ -53,13 +46,6 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, int destReg, Context &co
     // footer of the function
     stream << "lw ra, " << stack_size - 4 << "(sp)" << std::endl;
     stream << "lw s0, " << stack_size - 8 << "(sp)" << std::endl;
-    // stream << "lw t0, " << stack_size - 12 << "(sp)" << std::endl;
-    // stream << "lw t1, " << stack_size - 16 << "(sp)" << std::endl;
-    // stream << "lw t2, " << stack_size - 20 << "(sp)" << std::endl;
-    // stream << "lw t3, " << stack_size - 24 << "(sp)" << std::endl;
-    // stream << "lw t4, " << stack_size - 28 << "(sp)" << std::endl;
-    // stream << "lw t5, " << stack_size - 32 << "(sp)" << std::endl;
-    // stream << "lw t6, " << stack_size - 36 << "(sp)" << std::endl;
     stream << "addi sp, sp, " << stack_size << std::endl;
     stream << context.getMoveInstruction(return_type) << " " << context.getRegisterName(returnReg) << ", " << context.getRegisterName(flowReg) << std::endl;
     stream << "ret" << std::endl;

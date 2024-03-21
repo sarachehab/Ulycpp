@@ -116,6 +116,8 @@ public:
         for (int i = 0; i < 32; i++){
             registers_type.push_back(Specifier::_float);
         }
+
+        enterScope(0);
     }
 
     void useRegister(int i, Specifier type);
@@ -193,6 +195,12 @@ inline std::unordered_map <Specifier, int> SpecifierSize {
     {Specifier::_int, 4},
     {Specifier::_float, 4},
     {Specifier::_double, 8},
+};
+
+inline std::unordered_map <Specifier, int> SpecifierAlign {
+    {Specifier::_int, 2},
+    {Specifier::_float, 2},
+    {Specifier::_double, 3},
 };
 
 struct Variable {

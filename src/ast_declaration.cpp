@@ -1,5 +1,6 @@
 #include "ast_declaration.hpp"
 #include "ast_assignment.hpp"
+#include "Arrays/ast_array_initializer.hpp"
 
 Specifier Declaration::getType(Context& context) const {
     return declaration_specifier_->getType(context);
@@ -45,18 +46,24 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
                 
             case ProgramVarType::_array:
                 number_elements = declaration->getSize();
-
-                if (number_elements == -1) { // assume initializer list exists
-                    number_elements = assignment_->getSize();
-                }
-
                 memory_offset = context.increaseCurrentStackSize(number_elements*memory_cells_allocated);
 
-                if (assignment_ == nullptr) {
-                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_array, -1);
-                } else {
-                    std::runtime_error("Initialiser list not implement in Declaration.cpp");
+                if (assignment_ != nullptr) {
+                    Node* to_assign = assignment_->getValToAssign();
+                    ArrayList* InitList = dynamic_cast<ArrayList*>(to_assign);
+
+                    if (number_elements == -1){
+                        number_elements = InitList->getSize();
+                    }
+                    
+                    for (int i = 0; i < InitList->getSize(); i++){
+                        srcReg = context.allocateRegister(type);
+                        stream << "li " << context.getRegisterName(srcReg) << ", " << InitList->getElement(i) << std::endl;
+                        stream << context.getStoreInstruction(type) << ", " << i*SpecifierSize[type] - memory_offset  << "(s0)" << std::endl;
+                    }
                 }
+
+                context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_array, -1);
                 break;
 
             default: std::runtime_error("VarType not recognised in Declaration.cpp");

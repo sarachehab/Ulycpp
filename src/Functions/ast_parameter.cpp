@@ -51,7 +51,7 @@ void ParametersList::EmitRISC(std::ostream &stream, int destReg, Context &contex
 void ParametersList::Print(std::ostream& stream) const {
     for (auto parameter : nodes_){
         parameter->Print(stream);
-        stream << ", "; // todo: fix this, currenyly printing , for last parameter
+        stream << ", ";
     }
 }
 
