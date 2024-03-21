@@ -21,31 +21,36 @@ Specifier ArrayIndex::getType(Context &context) const {
     return context.getVariableSpecs(identifier_->getIdentifier()).type;
 }
 
-int ArrayIndex::getCurrentIndex() const {
-    return index_->getValue();
+void ArrayIndex::computeIndex(std::ostream& stream, int tmpReg, Context& context) const {
+    Variable variable_specs = context.getVariableSpecs(getIdentifier());
+
+    int memory_cells_allocated = SpecifierSize[variable_specs.type];
+
+    index_->EmitRISC(stream, tmpReg, context);
+
+    int sizeReg = context.allocateRegister(Specifier::_int);
+    stream << "li " << context.getRegisterName(sizeReg) << ", " << SpecifierSize[variable_specs.type] << std::endl;
+    stream << "mul " <<  context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(sizeReg) << std::endl; 
+    context.freeUpRegister(sizeReg);
+
+    stream << "add " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", s0" << std::endl;
+    stream << "addi " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) << ", " << variable_specs.sp_offset << std::endl;
 }
 
 void ArrayIndex::EmitRISC(std::ostream &stream, int destReg, Context &context) const {
     Variable variable_specs = context.getVariableSpecs(identifier_->getIdentifier());
-    int tmpReg = context.allocateRegister(variable_specs.type);
 
-    int memory_cells_allocated = SpecifierSize[variable_specs.type];
-    int offset = variable_specs.memory_cells_allocated;
+    int tmpReg = context.allocateRegister(Specifier::_int);
 
-    index_->EmitRISC(stream, destReg, context);
-
-    stream << "slli " <<  context.getRegisterName(destReg) << ", " << context.getRegisterName(destReg) << ", 2" << std::endl; 
-    stream << "addi " << context.getRegisterName(tmpReg) << ", s0, -16" << std::endl;
-
-    stream << "add " << context.getRegisterName(destReg) << ", " << context.getRegisterName(tmpReg) 
-        << ", " << context.getRegisterName(destReg) << std::endl;
+    computeIndex(stream, tmpReg, context);
 
     stream << context.getLoadInstruction(variable_specs.type) << " " << context.getRegisterName(destReg) 
-        << ", " << - offset - 4 << "(" << context.getRegisterName(destReg) << ")" << std::endl;
+        << ", 0(" << context.getRegisterName(tmpReg) << ")" << std::endl;
 
     variable_specs.reg = destReg; 
-
     context.updateVariableSpecs(identifier_->getIdentifier(), variable_specs);
+
+    context.freeUpRegister(tmpReg);
 }
 
 void ArrayIndex::Print(std::ostream &stream) const {

@@ -16,6 +16,11 @@ void ExternalDeclaration::Print(std::ostream& stream) const {
     stream << std::endl;
 }
 
+VarScope ExternalDeclaration::getVarScope() const {
+    return VarScope::_global;
+}
+
+
 void InternalFunction::EmitRISC(std::ostream& stream, int destReg, Context& context) const {
     declaration_->EmitRISC(stream, destReg, context);
 }

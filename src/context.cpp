@@ -44,6 +44,7 @@ int Context::allocateRegister(Specifier type){
 
     // if all registers are used up, free up a register dating from oldest scope and use it
     for (auto stack : scopes) { //scopes is vector of Scope (<string, Variable> variable_bindings, int current_scope_size_)
+        std::cerr << "ERROR in register allocation" << std::endl;
         auto scope_variable_bindings = stack.variable_bindings;
 
         for (auto it = scope_variable_bindings.begin(); it != scope_variable_bindings.end(); it++){
@@ -90,8 +91,8 @@ int Context::getCurrentScopeSize() {
 }
 
 
-void Context::addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, int reg){
-    scopes.back().variable_bindings[name] = Variable(type, memory_cells_allocated, sp_offset, reg);
+void Context::addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, VarScope type_scope, ProgramVarType var_type, int reg){
+    scopes.back().variable_bindings[name] = Variable(type, type_scope, var_type, memory_cells_allocated, sp_offset, reg);
 }
 
 

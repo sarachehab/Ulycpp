@@ -14,7 +14,6 @@ std::vector<Node *> NodeList::getNodes() const {
         return nodes_;
     }
 
-
 ExternalDeclarationType Node::getExternalType() const {
     return ExternalDeclarationType::_global;
 }
@@ -94,3 +93,7 @@ std::vector<Node *> Node::getNodes() const {
     std::cerr << getNodeType() << std::endl;;
     throw std::runtime_error("getNodes should not have been called (ast_node)");
 }
+
+VarScope Node::getVarScope() const { return VarScope::_local; }
+
+ProgramVarType Node::defineVarType() const { return ProgramVarType::_unique; }

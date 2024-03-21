@@ -22,3 +22,7 @@ void ArrayDeclarator::Print(std::ostream& stream) const {
     }
     stream << "]"; 
 }
+
+ProgramVarType ArrayDeclarator::defineVarType() const {
+    return ProgramVarType::_array;
+}

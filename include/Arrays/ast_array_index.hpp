@@ -21,7 +21,8 @@ public:
     }
 
     int fetchVariable(Context &context) const override;
-    int getCurrentIndex() const override;
+
+    void computeIndex(std::ostream& stream, int tmpReg, Context& context) const;
 
     Specifier getType(Context &context) const override;
     std::string getIdentifier() const override;

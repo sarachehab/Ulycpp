@@ -19,6 +19,9 @@ public:
     virtual int getValue() const;
     virtual Node* getElement(int index) const;
     virtual bool isArray() const;
+    virtual int getCurrentIndex() const;
+
+    virtual ProgramVarType defineVarType() const;
 
     // defined for floats
     virtual Specifier getType(Context& context) const;
@@ -37,7 +40,8 @@ public:
 
     virtual ExternalDeclarationType getExternalType() const;
 
-    virtual int getCurrentIndex() const;
+    // defined for globals
+    virtual VarScope getVarScope() const;
 };
 
 // Represents a list of nodes.

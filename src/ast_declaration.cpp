@@ -23,40 +23,43 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
 
     for (auto declaration : init_declarator_list_->getNodes()) {
         std::string identifier = declaration->getIdentifier();
-        bool isArray = declaration->isArray();
+        // bool isArray = declaration->isArray();
 
-        int number_elements = 1;
-
-        if (isArray){
-            number_elements = declaration->getSize();
-
-            // if size not defined, assume size of array is size of initializer
-            if (number_elements == -1) {
-                number_elements = 1; // TODO: Fix this
-            }
-        }
-
-        // adjust stack
-        int memory_offset = context.increaseCurrentStackSize(number_elements*memory_cells_allocated);
+        int memory_offset, srcReg, number_elements = 1;
 
         Assignment* assignment_ = dynamic_cast<Assignment*>(declaration);
-        if (assignment_ == nullptr){
-            context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, -1);
-        } else {
-            
-            if (isArray){
-                int init_list_size = assignment_->getSize();
-                for (int i = 0; i < init_list_size; i++){
-                    int srcReg = context.allocateRegister(type);
-                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset+i*memory_cells_allocated, type, srcReg);
-                    // TODO: complete
+
+        switch (declaration->defineVarType()) {
+
+            case ProgramVarType::_unique:
+
+                memory_offset = context.increaseCurrentStackSize(memory_cells_allocated);
+                if (assignment_ == nullptr) {
+                    context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_unique, -1);
+                } else {
+                    srcReg = context.allocateRegister(type);
+                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_unique, srcReg);
+                    declaration->EmitRISC(stream, destReg, context);
                 }
-            }
-            else {
-                int srcReg = context.allocateRegister(type);
-                context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, srcReg);
-                declaration->EmitRISC(stream, destReg, context);
-            }
+                break;
+                
+            case ProgramVarType::_array:
+                number_elements = declaration->getSize();
+
+                if (number_elements == -1) { // assume initializer list exists
+                    number_elements = assignment_->getSize();
+                }
+
+                memory_offset = context.increaseCurrentStackSize(number_elements*memory_cells_allocated);
+
+                if (assignment_ == nullptr) {
+                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_array, -1);
+                } else {
+                    std::runtime_error("Initialiser list not implement in Declaration.cpp");
+                }
+                break;
+
+            default: std::runtime_error("VarType not recognised in Declaration.cpp");
         }
     }
 }

@@ -3,8 +3,8 @@
 void Loop::EmitRISC(std::ostream &stream, int destReg, Context& context) const {
 
     // creating labels and adding them to stack for breaks and continues
-    std::string start_label = context.createLabel("enter_while_statement");
-    std::string end_label = context.createLabel("exit_while_statement");
+    std::string start_label = context.createLabel("enter_loop_statement");
+    std::string end_label = context.createLabel("exit_loop_statement");
     context.pushLabels(start_label, end_label);
 
     // assigning register for condition checking
