@@ -44,9 +44,9 @@
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
-%type <number_int> INT_CONSTANT STRING_LITERAL
+%type <number_int> INT_CONSTANT 
 %type <number_float> FLOAT_CONSTANT
-%type <string> IDENTIFIER
+%type <string> IDENTIFIER STRING_LITERAL
 
 
 %start ROOT
@@ -153,21 +153,22 @@ expression_statement
 
 jump_statement
 	: RETURN ';' 			{ $$ = new ReturnStatement(nullptr); }
-	| RETURN expression ';' { std::cerr << "PARSER: defined return with expr" << std::endl; $$ = new ReturnStatement($2); }
+	| RETURN expression ';' { $$ = new ReturnStatement($2); }
 	| CONTINUE ';'			{ $$ = new ContinueStatement(); }
 	| BREAK ';'				{ $$ = new BreakStatement(); }
 	;
 
 primary_expression
 	: INT_CONSTANT 			{ $$ = new IntConstant($1); }
-	| FLOAT_CONSTANT		{ std::cerr << "declaring immediate float " << std::endl; $$ = new FloatConstant($1); }
+	| FLOAT_CONSTANT		{ $$ = new FloatConstant($1); }
 	| IDENTIFIER			{ $$ = new VariableIdentifier($1); }
+	| STRING_LITERAL		{ std::cerr << "defining string" << std::endl; $$ = new Character($1); }
 	| '(' expression ')'	{ $$ = $2; }
 	;
 
 postfix_expression
 	: primary_expression										{ $$ = $1; }
-	| postfix_expression '(' ')' 								{ std::cerr << "PARSER: function called here" << std::endl; $$ = new FunctionCall($1); }
+	| postfix_expression '(' ')' 								{ $$ = new FunctionCall($1); }
 	| postfix_expression '(' argument_expression_list ')'		{ $$ = new FunctionCall($1, $3); }
 	| postfix_expression INC_OP									{ $$ = new RightIncrement($1); }
 	| postfix_expression DEC_OP									{ $$ = new RightDecrement($1); }
@@ -283,7 +284,7 @@ constant_expression
 selection_statement
 	: IF '(' expression ')' statement					{ $$ = new IfStatement($3, $5); }
 	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStatement($3, $5, $7); }
-	| SWITCH '(' expression ')' statement				{ /*$$ = new Switch($3, $5);*/ }
+	| SWITCH '(' expression ')' statement				{ $$ = new Switch($3, $5); }
 	;
 
 iteration_statement
@@ -294,8 +295,8 @@ iteration_statement
 	;
 
 labeled_statement
-	: CASE constant_expression ':' statement	{ /*$$ = new Case($2, $4);*/ }
-	| DEFAULT ':' statement						{ /*$$ = new Default($3);*/ }
+	: CASE constant_expression ':' statement	{ $$ = new Case($2, $4); }
+	| DEFAULT ':' statement						{ $$ = new Default($3); }
 	;
 
 type_name

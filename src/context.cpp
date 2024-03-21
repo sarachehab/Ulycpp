@@ -25,6 +25,7 @@ int Context::allocateRegister(Specifier type){
     int start_reg_file;
     switch(type){
         case Specifier::_int:
+        case Specifier::_char:
             start_reg_file = 0;
             break;
         case Specifier::_float:
@@ -268,6 +269,8 @@ std::string Context::getStoreInstruction(Specifier type) const {
             return "fsw";
         case Specifier::_double:
             return "fsd";
+        case Specifier::_char:
+            return "sb";
         default: throw std::runtime_error("type not recognised in assignement emitrisc");
     }
 }
@@ -282,6 +285,8 @@ std::string Context::getLoadInstruction(Specifier type) const {
             return "flw";
         case Specifier::_double:
             return "fld";
+        case Specifier::_char:
+            return "lbu";
         default: throw std::runtime_error("type not recognised in assignement emitrisc");
     }
 }
@@ -296,6 +301,8 @@ std::string Context::getMoveInstruction(Specifier type) const {
             return "fmv.s";
         case Specifier::_double:
             return "fmv.d";
+        case Specifier::_char:
+            return "mv";
         default: throw std::runtime_error("type not recognised in assignement emitrisc");
     }
 }
