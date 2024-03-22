@@ -36,10 +36,10 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
 
                 memory_offset = context.increaseCurrentStackSize(memory_cells_allocated);
                 if (assignment_ == nullptr) {
-                    context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_unique, -1);
+                    context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, Specifier::_not_specified, declaration->getVarScope(), ProgramVarType::_unique, -1);
                 } else {
                     srcReg = context.allocateRegister(type);
-                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_unique, srcReg);
+                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, Specifier::_not_specified, declaration->getVarScope(), ProgramVarType::_unique, srcReg);
                     declaration->EmitRISC(stream, destReg, context);
                 }
                 break;
@@ -63,7 +63,21 @@ void Declaration::EmitRISC(std::ostream &stream, int destReg, Context &context) 
                     }
                 }
 
-                context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, declaration->getVarScope(), ProgramVarType::_array, -1);
+                context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, type, Specifier::_not_specified, declaration->getVarScope(), ProgramVarType::_array, -1);
+                break;
+            
+            case ProgramVarType::_pointer:
+                memory_cells_allocated = SpecifierSize[Specifier::_int];
+                memory_offset = context.increaseCurrentStackSize(memory_cells_allocated);
+
+                if (assignment_ != nullptr) {
+                    context.addVariable(identifier, memory_cells_allocated, -memory_offset, Specifier::_int, type, declaration->getVarScope(), ProgramVarType::_pointer, -1);
+                } else {
+                    std::cerr << "initialization of pointer not supported yet" << std::endl;
+                    srcReg = context.allocateRegister(type);
+                    context.addVariable(identifier, memory_cells_allocated*number_elements, -memory_offset, Specifier::_int, type, declaration->getVarScope(), ProgramVarType::_pointer, srcReg);
+                    declaration->EmitRISC(stream, destReg, context);
+                }
                 break;
 
             default: std::runtime_error("VarType not recognised in Declaration.cpp");

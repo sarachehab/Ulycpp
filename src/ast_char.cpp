@@ -1,3 +1,5 @@
+
+
 #include "../include/ast_char.hpp"
 
 void Character::EmitRISC(std::ostream& stream, int destReg, Context& context) const {

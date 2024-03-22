@@ -1,5 +1,6 @@
 #include "ast_assignment.hpp"
 #include "../include/Arrays/ast_array_index.hpp"
+#include "../include/Pointers/ast_pointer.hpp"
 
 std::string Assignment::getIdentifier() const {
     return target_variable_->getIdentifier();
@@ -26,7 +27,9 @@ void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) c
 
     // initialising bcs switch was nagging
     ArrayIndex* array_index_;
-    int tmpReg = 0;
+    PointerDereference* dereference_;
+    int tmpReg = 0, indexReg = 0;
+
     switch(target_specs.var_type){
 
         case ProgramVarType::_unique:
@@ -57,6 +60,38 @@ void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) c
             stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", 0(" 
                         << context.getRegisterName(tmpReg) << ")" << std::endl;
             context.freeUpRegister(tmpReg);
+            break;
+
+        case ProgramVarType::_pointer:
+            array_index_ = dynamic_cast<ArrayIndex* >(target_variable_);
+            dereference_ = dynamic_cast<PointerDereference* >(target_variable_);
+
+            if (array_index_ != nullptr) {  
+                tmpReg = context.allocateRegister(Specifier::_int);
+                indexReg = context.allocateRegister(Specifier::_int);
+
+                stream << context.getLoadInstruction(Specifier::_int) << " " << context.getRegisterName(tmpReg) 
+                        << ", " << target_specs.sp_offset << "(s0)" << std::endl;
+
+                array_index_->EmitIndex(stream, indexReg, context);
+
+                stream << "slli " <<  context.getRegisterName(indexReg) << ", " << context.getRegisterName(indexReg) 
+                    << ", " << SpecifierAlign[target_specs.type] << std::endl;
+                stream << "add " << context.getRegisterName(tmpReg) << ", " << context.getRegisterName(tmpReg) 
+                    << ", " << context.getRegisterName(indexReg) << std::endl;
+                stream << context.getStoreInstruction(target_specs.type) << " " << context.getRegisterName(destReg) 
+                    << ", 0(" << context.getRegisterName(tmpReg) << ")" << std::endl;
+
+                context.freeUpRegister(tmpReg);
+                context.freeUpRegister(indexReg);
+
+            } else if (dereference_ != nullptr) {
+                dereference_->EmitRISC(stream, destReg, context);
+
+            } else {
+                // throw std::runtime_error("Pointer neither array not dereferenced in Assignment.cpp");
+            }            
+
             break;
 
         default: std::runtime_error("Type not recognised in Assignment.cpp");

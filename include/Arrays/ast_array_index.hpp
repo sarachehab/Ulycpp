@@ -27,6 +27,7 @@ public:
     Specifier getType(Context &context) const override;
     std::string getIdentifier() const override;
 
+    void EmitIndex(std::ostream &stream, int destReg, Context &context) const;
     void EmitRISC(std::ostream &stream, int destReg, Context &context) const override;
     void Print(std::ostream &stream) const override;
 };

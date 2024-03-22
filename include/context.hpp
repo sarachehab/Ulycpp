@@ -25,6 +25,7 @@ enum class Specifier {
     _float,
     _double,
     _char,
+    _not_specified = -1,
 };
 
 enum class ProgramVarType {
@@ -138,7 +139,7 @@ public:
     int getCurrentScopeSize();
 
     // function to add to bindings
-    void addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, VarScope type_scope, ProgramVarType var_type, int reg);
+    void addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, Specifier pointing_to, VarScope type_scope, ProgramVarType var_type, int reg);
 
     // find variable in bindings
     int findVariableScope(std::string name) const ;
@@ -208,6 +209,7 @@ inline std::unordered_map <Specifier, int> SpecifierAlign {
 
 struct Variable {
     Specifier type;
+    Specifier pointing_to;
     VarScope type_scope;
     ProgramVarType var_type;
     int memory_cells_allocated;
@@ -216,8 +218,9 @@ struct Variable {
 
     Variable() = default; // Default constructor
 
-    Variable(Specifier _type, VarScope _type_scope, ProgramVarType _var_type, int _memory_cells_allocated, int _sp_offset, int _reg)
+    Variable(Specifier _type, Specifier _pointing_to, VarScope _type_scope, ProgramVarType _var_type, int _memory_cells_allocated, int _sp_offset, int _reg)
         : type(_type)
+        , pointing_to(_pointing_to)
         , type_scope(_type_scope)
         , var_type(_var_type)
         , memory_cells_allocated(_memory_cells_allocated)
