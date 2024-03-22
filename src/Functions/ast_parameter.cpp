@@ -1,4 +1,5 @@
 #include "../../include/Functions/ast_parameter.hpp"
+#include "../../include/Pointers/ast_pointer.hpp"
 
 Specifier Parameter::getType(Context& context) const {
     return declaration_specifier_->getType(context);
@@ -12,7 +13,14 @@ void Parameter::EmitRISC(std::ostream &stream, int destReg, Context &context) co
 
     std::string identifier = init_declarator_list_->getIdentifier();
 
-    context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, VarScope::_local, ProgramVarType::_unique, -1);
+    Pointer* pointer = dynamic_cast<Pointer*>(init_declarator_list_);
+    if (pointer != nullptr) {
+        context.addVariable(identifier, memory_cells_allocated, -memory_offset, Specifier::_int, type, VarScope::_local, ProgramVarType::_pointer, -1);
+    }
+    else {
+        context.addVariable(identifier, memory_cells_allocated, -memory_offset, type, Specifier::_not_specified, VarScope::_local, ProgramVarType::_unique, -1);
+    }
+
     stream << context.getStoreInstruction(type) << " " << context.getRegisterName(destReg) << ", " << -memory_offset << "(s0)" << std::endl;
 
 }

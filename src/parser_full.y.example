@@ -83,7 +83,7 @@ primary_expression
 
 postfix_expression
 	: primary_expression
-	| postfix_expression '[' expression ']' {/*here*/}
+	| postfix_expression '[' expression ']'
 	| postfix_expression '(' ')'
 	| postfix_expression '(' argument_expression_list ')'
 	| postfix_expression '.' IDENTIFIER
@@ -107,8 +107,8 @@ unary_expression
 	;
 
 unary_operator
-	: '&'
-	| '*'
+	: '&'  {/*here*/}
+	| '*'  {/*here*/}
 	| '+'
 	| '-'
 	| '~'
@@ -317,8 +317,8 @@ direct_declarator
 		delete $1;
 	}
 	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']' {/*here*/}
-	| direct_declarator '[' ']' {/*here*/}
+	| direct_declarator '[' constant_expression ']'
+	| direct_declarator '[' ']'
 	| direct_declarator '(' parameter_list ')'
 	| direct_declarator '(' identifier_list ')'
 	| direct_declarator '(' ')' {
@@ -327,8 +327,8 @@ direct_declarator
 	;
 
 pointer
-	: '*'
-	| '*' pointer
+	: '*' {/*here*/}
+	| '*' pointer {/*here*/}
 	;
 
 parameter_list
@@ -372,13 +372,13 @@ direct_abstract_declarator
 
 initializer
 	: assignment_expression
-	| '{' initializer_list '}' {/*here*/}
-	| '{' initializer_list ',' '}' {/*here*/}
+	| '{' initializer_list '}'
+	| '{' initializer_list ',' '}'
 	;
 
 initializer_list
 	: initializer
-	| initializer_list ',' initializer {/* here */ }
+	| initializer_list ',' initializer
 	;
 
 statement

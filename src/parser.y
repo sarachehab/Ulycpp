@@ -93,6 +93,7 @@ init_declarator
 
 declarator
 	: direct_declarator { $$ = $1; }
+	| pointer direct_declarator  { $$ = new Pointer($2); }
 	;
 
 direct_declarator
@@ -200,6 +201,8 @@ unary_expression
 	| DEC_OP unary_expression	{ $$ = new LeftDecrement($2); }
 	| SIZEOF unary_expression	{ $$ = new SizeOf($2); }
 	| SIZEOF '(' type_name ')'	{ $$ = new SizeOf($3); }
+	| '&' cast_expression 		{ $$ = new AddressOf($2); }
+	| '*' cast_expression		{ $$ = new PointerDereference($2); }
 	;
 
 cast_expression
@@ -318,6 +321,10 @@ specifier_qualifier_list
 	: type_specifier { $$ = $1; }
 	;
 
+pointer
+	: '*' {/*here*/}
+	| '*' pointer {/*here*/}
+	;
 
 %%
 

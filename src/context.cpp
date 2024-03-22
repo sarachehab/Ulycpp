@@ -92,8 +92,8 @@ int Context::getCurrentScopeSize() {
 }
 
 
-void Context::addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, VarScope type_scope, ProgramVarType var_type, int reg){
-    scopes.back().variable_bindings[name] = Variable(type, type_scope, var_type, memory_cells_allocated, sp_offset, reg);
+void Context::addVariable(std::string name, int memory_cells_allocated, int sp_offset, Specifier type, Specifier pointing_to, VarScope type_scope, ProgramVarType var_type, int reg){
+    scopes.back().variable_bindings[name] = Variable(type, pointing_to, type_scope, var_type, memory_cells_allocated, sp_offset, reg);
 }
 
 

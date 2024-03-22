@@ -44,6 +44,8 @@
 #include "Arrays/ast_array_index.hpp"
 #include "Arrays/ast_array_initializer.hpp"
 
+#include "Pointers/ast_pointer.hpp"
+
 #include "ast_compound_statement.hpp"
 #include "ast_char.hpp"
 #include "ast_declarator.hpp"

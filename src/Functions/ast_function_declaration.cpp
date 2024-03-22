@@ -35,7 +35,7 @@ void ExternalDeclaration::EmitRISC(std::ostream& stream, int destReg, Context& c
             stream << global_declaration_->getIdentifier() << ":" << std::endl;
             stream << ".zero " << size << std::endl;
 
-            context.addVariable(global_declaration_->getIdentifier(), size, 0, global_declaration_->getType(context), 
+            context.addVariable(global_declaration_->getIdentifier(), size, 0, global_declaration_->getType(context), Specifier::_not_specified,
                     VarScope::_global, global_declaration_->defineVarType(), -1);
             break;
 

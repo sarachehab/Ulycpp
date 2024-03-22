@@ -26,6 +26,8 @@ public:
 
     Specifier getType(Context& context) const;
 
+    void HandlePointers(std::ostream& stream, Node* operand_, int destReg, int op1Reg, int op2Reg, Specifier type, Context& context) const;
+
     void EmitRISC(std::ostream &stream, int destReg, Context& context) const override;
     void Print(std::ostream &stream) const override;
 };
