@@ -16,6 +16,8 @@ public:
         delete address_;
     }
 
+    int fetchVariable(Context &context) const override;
+
     std::string getIdentifier() const override;
 
     void EmitRISC(std::ostream& stream, int destReg, Context& context) const override;
@@ -31,6 +33,26 @@ public:
     ~PointerDereference() {}
 
     void EmitRISC(std::ostream& stream, int destReg, Context& context) const override;
+};
+
+class AddressOf : public Node {
+protected:
+    Node* variable_;
+
+public:
+    AddressOf(Node* variable)
+        : variable_(variable)
+    {}
+    ~AddressOf(){
+        delete variable_;
+    }
+
+    int fetchVariable(Context &context) const override;
+
+    std::string getIdentifier() const;
+
+    void EmitRISC(std::ostream& stream, int destReg, Context& context) const override;
+    void Print(std::ostream& stream) const override;
 };
 
 #endif

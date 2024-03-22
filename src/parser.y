@@ -201,7 +201,7 @@ unary_expression
 	| DEC_OP unary_expression	{ $$ = new LeftDecrement($2); }
 	| SIZEOF unary_expression	{ $$ = new SizeOf($2); }
 	| SIZEOF '(' type_name ')'	{ $$ = new SizeOf($3); }
-	| '&' cast_expression 		{ /*$$ = new AddressOf($2);*/ }
+	| '&' cast_expression 		{ $$ = new AddressOf($2); }
 	| '*' cast_expression		{ $$ = new PointerDereference($2); }
 	;
 

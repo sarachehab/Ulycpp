@@ -37,6 +37,7 @@ void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) c
             switch (target_specs.type_scope) {
 
                 case VarScope::_local:
+                    stream << "# in identifier assignment" << std::endl;
                     stream << context.getStoreInstruction(type) << " " << context.getRegisterName(srcReg) << ", " << 
                         context.getVariableSpecs(target_variable_->getIdentifier()).sp_offset << "(s0)" << std::endl;
                     break;
@@ -86,10 +87,14 @@ void Assignment::EmitRISC(std::ostream &stream, int destReg, Context &context) c
                 context.freeUpRegister(indexReg);
 
             } else if (dereference_ != nullptr) {
+                stream << "# emitting dereference assignment" << std::endl;
                 dereference_->EmitRISC(stream, destReg, context);
+                // todo: do we need a store?
 
             } else {
-                // throw std::runtime_error("Pointer neither array not dereferenced in Assignment.cpp");
+                stream << "# in else" << std::endl;
+                stream << context.getStoreInstruction(Specifier::_int) << " " << context.getRegisterName(srcReg) 
+                    << ", " << target_specs.sp_offset << "(s0)" << std::endl;
             }            
 
             break;
